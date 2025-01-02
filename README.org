@@ -1,0 +1,15 @@
+#+title: Sk4rd's NixOS Config in Org-Mode
+
+[[./colors.png]]
+
+This is my NixOS and HomeManager configuration using flakes, which is
+written in Emacs' org-mode. It is an attempt to better structure my
+config and create a place to edit and maintain configs for other
+programs declaratively.
+
+* Flake
+
+* NixOS
+
+* HomeManager
+
