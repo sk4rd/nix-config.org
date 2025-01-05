@@ -168,6 +168,24 @@ This configures virtualisation options like Docker and libvirtd.
   }
 #+end_src
 
+*** AMDGPU
+
+This section enables opencl and vulkan on amd gpus.
+
+#+begin_src nix :tangle hosts/common/amdgpu.nix
+  { ... }:
+
+  {
+    hardware.amdgpu = {
+      opencl.enable = true;
+      amdvlk.enable = true;
+      amdvlk.support32Bit.enable = true;
+    };
+  }
+#+end_src
+
+
+
 ** Laptop
 
 This is my laptop specific configuration.
