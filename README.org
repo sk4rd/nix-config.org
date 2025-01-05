@@ -81,5 +81,21 @@ programs declaratively.
   }
 #+end_src
 
+*** Bootloader
+#+begin_src nix :tangle hosts/common/boot.nix
+  { ... }:
+
+  {
+    boot.loader = {
+      efi.canTouchEfiVariables = true;
+      systemd-boot = {
+        enable = true;
+        editor = false;
+        configurationLimit = 30;
+      };
+    };
+  }
+#+end_src
+
 * HomeManager
 
