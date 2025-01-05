@@ -97,5 +97,27 @@ programs declaratively.
   }
 #+end_src
 
+*** Users
+#+begin_src nix :tangle hosts/common/users.nix
+  { config, pkgs, ... }:
+
+  let
+    username = "miko"; # Change this value to your own
+    description = "Mikolaj Bajtkiewicz"; # Usually set to your name
+  in
+  {
+    users.defaultUserShell = pkgs.zsh;
+    users.users.${username} = {
+      inherit description;
+      isNormalUser = true;
+      useDefaultShell = true;
+      extraGroups = [
+        "wheel"
+        "dialout"
+        (if config.virtualisation.docker.enable then "docker" else "")
+      ];
+    };
+  }
+#+end_src
 * HomeManager
 
