@@ -43,6 +43,16 @@ config. The configs are defined as flake outputs.
           ];
         };
 
+        nixosConfigurations.desktop = inputs.nixpkgs.lib.nixosSystem {
+          inherit pkgs;
+          modules = [
+            ./hosts/desktop
+            inputs.nixos-hardware.nixosModules.common-cpu-amd
+            inputs.nixos-hardware.nixosModules.common-gpu-amd
+            inputs.nixos-hardware.nixosModules.common-pc-ssd
+          ];
+        };
+
         homeConfigurations = {
         };
       };
