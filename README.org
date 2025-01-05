@@ -35,6 +35,7 @@ programs declaratively.
         nixosConfigurations.laptop = inputs.nixpkgs.lib.nixosSystem {
           inherit pkgs;
           modules = [
+            ./hosts/laptop
             inputs.nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1
           ];
         };
@@ -137,6 +138,65 @@ programs declaratively.
       spiceUSBRedirection.enable = true;
       docker.enable = true;
     };
+  }
+#+end_src
+
+** Laptop
+
+This is my laptop specific configuration.
+
+#+begin_src nix :tangle hosts/laptop/default.nix
+  { ... }:
+
+  {
+    imports = [
+      ../common/generic.nix
+      ../common/boot.nix
+      ../common/users.nix
+      ../common/virtualisation.nix
+
+      ./kernelModules.nix
+      ./filesystem.nix
+    ];
+  }
+#+end_src
+
+#+begin_src nix :tangle hosts/laptop/filesystems.nix
+  { ... }:
+
+  {
+    # File system config
+    fileSystems."/" = {
+      device = "/dev/disk/by-uuid/bc1d0786-cf98-4955-b442-18076c604f58"; # Change this...
+      fsType = "ext4";
+    };
+
+    fileSystems."/boot" = {
+      device = "/dev/disk/by-uuid/4AB9-DD8D"; # ... and this value according to your disks
+      fsType = "vfat";
+      options = [
+        "fmask=0077"
+        "dmask=0077"
+      ];
+    };
+
+    boot.supportedFilesystems = [ "ntfs" ];
+  }
+#+end_src
+
+#+begin_src nix :tangle hosts/laptop/kernelModules.nix
+
+  { ... }:
+
+  {
+    boot.kernelModules = [ "kvm-amd" ];
+    boot.initrd.availableKernelModules = [
+      "nvme"
+      "xhci_pci"
+      "thunderbolt"
+      "usb_storage"
+      "sd_mod"
+    ];
   }
 #+end_src
 
