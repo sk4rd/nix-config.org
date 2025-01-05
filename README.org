@@ -203,6 +203,19 @@ This section enables opencl and vulkan on amd gpus.
   }
 #+end_src
 
+*** Controllers
+
+#+begin_src nix :tangle hosts/common/controllers.nix
+  { ... }:
+
+  {
+    # XBOX Controller
+    hardware.xone.enable = true;
+    # Steam Controller
+    hardware.steam-hardware.enable = true;
+  }
+#+end_src
+
 ** Laptop
 
 This is my laptop specific configuration.
