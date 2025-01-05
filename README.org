@@ -228,3 +228,76 @@ This includes kernel modules needed for specific hardware support.
 
 * HomeManager
 
+** Programs
+
+*** Emacs
+
+This is my init.el, which gets tangled directly into the =extraConfig=
+option of my nix config.
+
+#+name: emacs-config
+#+begin_src elisp
+  ;; Apply catppuccin theme
+  (setq catppuccin-flavor 'mocha)
+  (load-theme 'catppuccin t)
+
+  ;; Set IBM Plex Mono font
+  (set-frame-font "BlexMono Nerd Font 10" nil t)
+
+  ;; Disable GUI elements
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+
+  ;; Backup directory in ~/.emacs.d/backups
+  (let ((backup-dir "~/.emacs.d/backups"))
+    (unless (file-exists-p backup-dir)
+      (make-directory backup-dir))
+    (setq backup-directory-alist `(("." . ,backup-dir))))
+
+  ;; Autosave directory in ~/.emacs.d/autosaves
+  (let ((autosave-dir "~/.emacs.d/autosaves"))
+    (unless (file-exists-p autosave-dir)
+      (make-directory autosave-dir))
+    (setq auto-save-file-name-transforms
+          `((".*" ,(concat autosave-dir "/\\1") t))))
+
+  ;; Use spaces instead of tabs globally
+  (setq-default indent-tabs-mode nil)
+
+  ;; Set the default tab width to 4 spaces (optional, adjust as needed)
+  (setq-default tab-width 4)
+
+  (require 'nix-mode)
+  (add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
+
+  (setq lspce-send-changes-idle-time 0.1)
+  (setq lspce-show-log-level-in-modeline t)
+  (setq lspce-server-programs `(("nix" "nil")))
+#+end_src
+
+Here I define the Emacs config for nix which includes packages.
+
+#+begin_src nix :tangle home/common/emacs.nix :noweb yes
+  { pkgs, ... }:
+
+  {
+    home.packages = with pkgs; [ nil ];
+    programs.emacs = {
+      enable = true;
+      package = pkgs.emacs30-pgtk;
+      extraPackages = epkgs: with epkgs; [
+        f
+        yasnippet
+        markdown-mode
+        company
+        catppuccin-theme
+        nix-mode
+        lspce
+      ];
+      extraConfig = ''
+        <<emacs-config>>
+      '';
+    };
+  }
+#+end_src
