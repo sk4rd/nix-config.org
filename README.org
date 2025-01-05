@@ -10,6 +10,9 @@ programs declaratively.
 
 * Flake
 
+This is the flake for managing inputs to my NixOS and HomeManager
+config. The configs are defined as flake outputs.
+
 #+begin_src nix :tangle flake.nix
   {
     description = "Sk4rd's NixOS & HomeManager Config";
@@ -51,6 +54,10 @@ programs declaratively.
 ** Common Configuration
 
 *** Generic
+
+This contains the generic system configuration, such as time zone and
+fonts.
+
 #+begin_src nix :tangle hosts/common/generic.nix
   { ... }:
 
@@ -83,6 +90,9 @@ programs declaratively.
 #+end_src
 
 *** Bootloader
+
+This enables and configures the systemd-boot loader.
+
 #+begin_src nix :tangle hosts/common/boot.nix
   { ... }:
 
@@ -99,6 +109,10 @@ programs declaratively.
 #+end_src
 
 *** Users
+
+This defines the user configuration, including user groups and default
+shell.
+
 #+begin_src nix :tangle hosts/common/users.nix
   { config, pkgs, ... }:
 
@@ -122,6 +136,9 @@ programs declaratively.
 #+end_src
 
 *** Virtualisation
+
+This configures virtualisation options like Docker and libvirtd.
+
 #+begin_src nix :tangle hosts/common/virtualisation.nix
   { pkgs, ... }:
 
@@ -161,6 +178,11 @@ This is my laptop specific configuration.
   }
 #+end_src
 
+*** Filesystem
+
+This configures the file systems for the laptop, including boot and
+root.
+
 #+begin_src nix :tangle hosts/laptop/filesystems.nix
   { ... }:
 
@@ -183,6 +205,10 @@ This is my laptop specific configuration.
     boot.supportedFilesystems = [ "ntfs" ];
   }
 #+end_src
+
+*** Kernel Modules
+
+This includes kernel modules needed for specific hardware support.
 
 #+begin_src nix :tangle hosts/laptop/kernelModules.nix
 
