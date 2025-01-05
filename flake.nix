@@ -19,10 +19,21 @@
       };
     in
     {
-      nixosConfigurations.laptop = inputs.nixpkgs.lib.nixosSystem {
+      nixosConfigurations."laptop" = inputs.nixpkgs.lib.nixosSystem {
         inherit pkgs;
         modules = [
+          ./hosts/laptop
           inputs.nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1
+        ];
+      };
+
+      nixosConfigurations."desktop" = inputs.nixpkgs.lib.nixosSystem {
+        inherit pkgs;
+        modules = [
+          ./hosts/desktop
+          inputs.nixos-hardware.nixosModules.common-cpu-amd
+          inputs.nixos-hardware.nixosModules.common-gpu-amd
+          inputs.nixos-hardware.nixosModules.common-pc-ssd
         ];
       };
 
