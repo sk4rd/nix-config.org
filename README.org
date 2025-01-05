@@ -1,4 +1,5 @@
 #+title: Sk4rd's NixOS Config in Org-Mode
+#+property: header-args :mkdirp yes
 
 [[./colors.png]]
 
