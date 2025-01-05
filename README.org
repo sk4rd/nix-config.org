@@ -343,8 +343,11 @@ This section sets up emacs as a lightweight IDE with autocompletion.
                  '(nix-mode . ("${pkgs.nil}/bin/nil"))))
 
   (with-eval-after-load 'nix-mode
-    (add-hook 'nix-mode-hook 'eglot-ensure))
-
+    (setq nix-nixfmt-bin "${pkgs.nixfmt-rfc-style}/bin/nixfmt")
+    (add-hook 'nix-mode-hook 'eglot-ensure)
+    (add-hook 'nix-mode-hook
+              (lambda ()
+                (add-hook 'before-save-hook #'nix-format-buffer nil t))))
 #+end_src
 
 **** Nix Config
