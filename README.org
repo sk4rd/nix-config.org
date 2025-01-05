@@ -119,5 +119,26 @@ programs declaratively.
     };
   }
 #+end_src
+
+*** Virtualisation
+#+begin_src nix :tangle hosts/common/virtualisation.nix
+  { pkgs, ... }:
+
+  {
+    virtualisation = {
+      libvirtd = {
+        enable = true;
+        qemu.ovmf = {
+          enable = true;
+          packages = with pkgs; [ OVMFFull.fd ];
+        };
+        qemu.swtpm.enable = true;
+      };
+      spiceUSBRedirection.enable = true;
+      docker.enable = true;
+    };
+  }
+#+end_src
+
 * HomeManager
 
