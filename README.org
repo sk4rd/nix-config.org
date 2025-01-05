@@ -35,7 +35,7 @@ config. The configs are defined as flake outputs.
         };
       in
       {
-        nixosConfigurations.laptop = inputs.nixpkgs.lib.nixosSystem {
+        nixosConfigurations."laptop" = inputs.nixpkgs.lib.nixosSystem {
           inherit pkgs;
           modules = [
             ./hosts/laptop
@@ -43,7 +43,7 @@ config. The configs are defined as flake outputs.
           ];
         };
 
-        nixosConfigurations.desktop = inputs.nixpkgs.lib.nixosSystem {
+        nixosConfigurations."desktop" = inputs.nixpkgs.lib.nixosSystem {
           inherit pkgs;
           modules = [
             ./hosts/desktop
