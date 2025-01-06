@@ -70,7 +70,7 @@ This contains the generic system configuration, such as time zone and
 fonts.
 
 #+begin_src nix :tangle hosts/common/generic.nix
-  { ... }:
+  { pkgs, ... }:
 
   {
     # Set the time zone
