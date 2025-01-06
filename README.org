@@ -171,29 +171,6 @@ shell.
   }
 #+end_src
 
-*** Virtualisation
-
-This configures virtualisation options like Docker and libvirtd.
-
-#+begin_src nix :tangle hosts/common/virtualisation.nix
-  { pkgs, ... }:
-
-  {
-    virtualisation = {
-      libvirtd = {
-        enable = true;
-        qemu.ovmf = {
-          enable = true;
-          packages = with pkgs; [ OVMFFull.fd ];
-        };
-        qemu.swtpm.enable = true;
-      };
-      spiceUSBRedirection.enable = true;
-      docker.enable = true;
-    };
-  }
-#+end_src
-
 *** AMDGPU
 
 This section enables opencl and vulkan on amd gpus.
@@ -242,6 +219,28 @@ This is the networking setup.
   }
 #+end_src
 
+*** Virtualisation
+
+This configures virtualisation options like Docker and libvirtd.
+
+#+begin_src nix :tangle hosts/common/virtualisation.nix
+  { pkgs, ... }:
+
+  {
+    virtualisation = {
+      libvirtd = {
+        enable = true;
+        qemu.ovmf = {
+          enable = true;
+          packages = with pkgs; [ OVMFFull.fd ];
+        };
+        qemu.swtpm.enable = true;
+      };
+      spiceUSBRedirection.enable = true;
+      docker.enable = true;
+    };
+  }
+#+end_src
 *** Controllers
 
 #+begin_src nix :tangle hosts/common/controllers.nix
