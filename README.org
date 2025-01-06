@@ -511,6 +511,7 @@ Here I define the Emacs config for nix which includes packages.
         company
         catppuccin-theme
         nix-mode
+        magit
       ];
       extraConfig = ''
         <<backup-and-autosave>>
