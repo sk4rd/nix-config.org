@@ -1,3 +1,4 @@
+# [[file:README.org::*Flake][Flake:1]]
 {
   description = "Sk4rd's NixOS & HomeManager Config";
 
@@ -41,3 +42,4 @@
       };
     };
 }
+# Flake:1 ends here
