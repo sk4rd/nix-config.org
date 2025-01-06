@@ -146,6 +146,30 @@ shell.
   }
 #+end_src
 
+*** Shell
+
+#+begin_src nix :tangle hosts/common/shell.nix
+  { ... }:
+
+  {
+    programs.zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
+      ohMyZsh = {
+        enable = true;
+        theme = "candy";
+        plugins = [
+          "sudo"
+          "git"
+          "zsh-bat"
+        ];
+      };
+    };
+  }
+#+end_src
+
 *** Virtualisation
 
 This configures virtualisation options like Docker and libvirtd.
