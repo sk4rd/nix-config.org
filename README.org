@@ -350,6 +350,54 @@ This includes kernel modules needed for specific hardware support.
   }
 #+end_src
 
+** Desktop
+
+This is my desktop specific configuration.
+
+#+begin_src nix :tangle hosts/desktop/default.nix
+  { ... }:
+
+  {
+    imports = [
+      ../common/generic.nix
+      ../common/boot.nix
+      ../common/users.nix
+      ../common/shell.nix
+      ../common/virtualisation.nix
+      ../common/amdgpu.nix
+      ../common/controllers.nix
+      ../common/hyprland.nix
+
+      ./filesystem.nix
+    ];
+  }
+#+end_src
+
+*** Filesystem
+
+#+begin_src nix :tangle hosts/desktop/filesystem.nix
+  { ... }:
+
+  {
+    fileSystems."/" = {
+      device = "/dev/disk/by-uuid/776417cb-937b-45bc-b6e0-026615e9da40";
+      fsType = "ext4";
+    };
+
+    fileSystems."/boot" = {
+      device = "/dev/disk/by-uuid/C4FA-A3EF";
+      fsType = "vfat";
+    };
+
+    swapDevices = [
+      {
+        device = "/.swapfile";
+        size = 32 * 1024;
+      }
+    ];
+  }
+#+end_src
+
 * HomeManager
 
 ** Programs
