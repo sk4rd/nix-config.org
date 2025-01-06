@@ -296,6 +296,20 @@ This configures virtualisation options like Docker and libvirtd.
   }
 #+end_src
 
+*** Printing
+
+#+begin_src nix :tangle hosts/common/printing.nix
+  { pkgs, ... }:
+
+  {
+    # Cupsd configuration for printing
+    services.printing = {
+      enable = true;
+      drivers = with pkgs; [ postscript-lexmark ];
+    };
+  }
+#+end_src
+
 ** Laptop
 
 This is my laptop specific configuration.
