@@ -140,6 +140,7 @@ shell.
       extraGroups = [
         "wheel"
         "dialout"
+        (if config.networking.networkmanager.enable then "networkmanager" else "")
         (if config.virtualisation.docker.enable then "docker" else "")
       ];
     };
@@ -206,6 +207,20 @@ This section enables opencl and vulkan on amd gpus.
       amdvlk.enable = true;
       amdvlk.support32Bit.enable = true;
     };
+  }
+#+end_src
+
+*** Networking
+
+This is the networking setup.
+
+#+begin_src nix :tangle hosts/common/networking.nix
+  { ... }:
+
+  {
+    networking.networkmanager.enable = true;
+    networking.wireguard.enable = true;
+    networking.firewall.enable = true;
   }
 #+end_src
 
