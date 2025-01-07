@@ -6,6 +6,7 @@
     # Programs
     ./emacs.nix
     ./kitty.nix
+    ./hyprland.nix
   ];
 }
 # Common:1 ends here
