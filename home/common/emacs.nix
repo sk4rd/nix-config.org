@@ -75,6 +75,9 @@
       (with-eval-after-load 'display-line-numbers
         (setq display-line-numbers-type 'relative))
       (add-hook 'prog-mode-hook 'display-line-numbers-mode)
+      
+      ;; Remove trailing whitespace
+      (add-hook 'before-save-hook 'delete-trailing-whitespace)
     '';
   };
 }
