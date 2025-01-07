@@ -470,6 +470,20 @@ This is my desktop specific configuration.
 
 * HomeManager
 
+** Common
+
+#+begin_src nix :tangle home/common/default.nix
+  {... }:
+
+  {
+    imports = [
+      # Programs
+      ./emacs.nix
+      ./kitty.nix
+    ];
+  }
+#+end_src
+
 ** Programs
 
 *** Emacs
