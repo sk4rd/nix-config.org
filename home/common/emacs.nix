@@ -51,12 +51,12 @@
       
       ;; Set up auto completion with company-mode
       (autoload 'company "company-mode" "Company mode for text completion." t)
-      (add-hook 'prog-mode-hook 'company-mode)
       (with-eval-after-load 'company
         (setq company-idle-delay 0.1)
         (setq company-minimum-prefix-length 2)
         (setq company-tooltip-align-annotations t)
         (add-to-list 'company-backends 'company-capf))
+      (add-hook 'prog-mode-hook 'company-mode)
       
       ;; Set up eglot lsp
       (with-eval-after-load 'eglot
@@ -69,6 +69,12 @@
         (add-hook 'nix-mode-hook
                   (lambda ()
                     (add-hook 'before-save-hook #'nix-format-buffer nil t))))
+      
+      ;; Line numbers
+      (autoload 'display-line-numbers-mode "display-line-numbers" "View line numbers." t)
+      (with-eval-after-load 'display-line-numbers
+        (setq display-line-numbers-type 'relative))
+      (add-hook 'prog-mode-hook 'display-line-numbers-mode)
     '';
   };
 }
