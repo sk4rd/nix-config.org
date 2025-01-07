@@ -1,6 +1,5 @@
-
 #+title: Sk4rd's NixOS Config in Org-Mode
-#+property: header-args :mkdirp yes :comments link
+#+property: header-args :mkdirp yes :comments link :results silent
 
 [[./colors.png]]
 
