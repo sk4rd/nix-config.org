@@ -229,7 +229,6 @@ shell.
         plugins = [
           "sudo"
           "git"
-          "zsh-bat"
         ];
       };
     };

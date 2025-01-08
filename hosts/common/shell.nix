@@ -12,7 +12,6 @@
       plugins = [
         "sudo"
         "git"
-        "zsh-bat"
       ];
     };
   };
