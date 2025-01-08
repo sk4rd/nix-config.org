@@ -927,3 +927,13 @@ Configuration specific to my desktop.
 #+end_src
 
 ** miko@laptop
+
+Configuration specific to my laptop.
+
+#+begin_src nix :tangle home/miko/laptop/default.nix
+  { ... }:
+
+  {
+    imports = [ ../../common ];
+  }
+#+end_src
