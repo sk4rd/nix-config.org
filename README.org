@@ -3,97 +3,63 @@
 
 [[./colors.png]]
 
-This is my NixOS and HomeManager configuration using flakes, which is
-written in Emacs' org-mode. It is an attempt to better structure my
-config and create a place to edit and maintain configs for other
-programs declaratively.
+This file contains my NixOS and HomeManager configuration using
+flakes, written in org-mode. The goal is to manage system and program
+settings declaratively and keep everything well-structured.
 
 * Flake
 
-This is the flake for managing inputs to my NixOS and HomeManager
-config. The configs are defined as flake outputs.
+This flake manages dependencies (inputs) and defines configurations
+(outputs) for NixOS and HomeManager.
 
-#+begin_src nix :tangle flake.nix
+** Inputs
+
+Dependencies for the configuration, including:
+- =nixpkgs=: The main Nix package source.
+- =home-manager=: For user configurations.
+- =nixos-hardware=: Hardware-specific settings.
+
+#+name: flake-inputs
+#+begin_src nix
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    home-manager.url = "github:nix-community/home-manager/release-24.11";
+    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
+  };
+#+end_src
+
+** Outputs
+
+Defines system (NixOS) and user (HomeManager) configurations as flake
+outputs.
+
+#+begin_src nix :tangle flake.nix :noweb yes
   {
     description = "Sk4rd's NixOS & HomeManager Config";
 
-    inputs = {
-      nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-      home-manager.url = "github:nix-community/home-manager/release-24.11";
-      home-manager.inputs.nixpkgs.follows = "nixpkgs";
-      nixos-hardware.url = "github:NixOS/nixos-hardware";
-      agenix.url = "github:ryantm/agenix";
-    };
+    <<flake-inputs>>
 
     outputs =
       { self, ... }@inputs:
       let
-        system = "x86_64-linux";
-        pkgs = import inputs.nixpkgs {
-          inherit system;
-          config.allowUnfree = true;
-        };
+        <<system-and-packages>>
 
-        mkHostConfig =
-          {
-            extraModules ? [ ],
-          }:
-          host:
-          inputs.nixpkgs.lib.nixosSystem {
-            inherit pkgs;
-            modules = [ ./hosts/${host} ] ++ extraModules;
-          };
+        <<host-helper-function>>
 
-        mkNixosConfigs =
-          configs:
-          inputs.nixpkgs.lib.genAttrs (builtins.attrNames configs) (
-            name: mkHostConfig { extraModules = configs.${name}.extraModules or [ ]; } name
-          );
-
-        mkHomeConfig =
-          {
-            extraModules ? [ ],
-          }:
-          user: host:
-          inputs.home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            modules = [ ./home/${user}/${host} ] ++ extraModules;
-          };
-
-        mkHomeManagerConfigs =
-          configs:
-          inputs.nixpkgs.lib.genAttrs (builtins.attrNames configs) (
-            name:
-            let
-              parts = builtins.split "@" name;
-              user = builtins.elemAt parts 0;
-              host = builtins.elemAt parts 2;
-            in
-            mkHomeConfig {
-              extraModules = configs.${name}.extraModules or [ ];
-            } user host
-          );
+        <<home-helper-function>>
       in
       {
-        nixosConfigurations = mkNixosConfigs {
+        nixosConfigurations = mkHosts {
           "laptop".extraModules = [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1 ];
           "desktop".extraModules = [
             inputs.nixos-hardware.nixosModules.common-cpu-amd
             inputs.nixos-hardware.nixosModules.common-gpu-amd
             inputs.nixos-hardware.nixosModules.common-pc-ssd
           ];
-          "vm".extraModules = [
-            inputs.home-manager.nixosModules.home-manager
-            {
-              home-manager.users."miko" = {
-                imports = [ ./home/common ];
-                home.stateVersion = "24.11";
-              };
-            }
-          ];
         };
 
-        homeConfigurations = mkHomeManagerConfigs {
+        homeConfigurations = mkHomes {
           "miko@laptop" = { };
           "miko@desktop" = { };
         };
@@ -101,9 +67,67 @@ config. The configs are defined as flake outputs.
   }
 #+end_src
 
+*** System & Packages
+
+Configures the system type and enables unfree software.
+
+#+name: system-and-packages
+#+begin_src nix
+  system = "x86_64-linux";
+  pkgs = import inputs.nixpkgs {
+    inherit system;
+    config.allowUnfree = true;
+  };
+#+end_src
+
+*** Helper Functions
+
+Helper functions simplify creating configurations for hosts and users.
+ 
+**** Host Helper Function
+
+Generates NixOS configurations for each host.
+
+#+name: host-helper-function
+#+begin_src nix
+  mkHosts =
+    systems:
+    inputs.nixpkgs.lib.genAttrs (builtins.attrNames systems) (
+      name:
+      inputs.nixpkgs.lib.nixosSystem {
+        inherit pkgs;
+        modules = [ ./hosts/${name} ] ++ systems.${name}.extraModules or [ ];
+        specialArgs = { hostname = name; }; # Pass hostname to modules
+      }
+    );
+#+end_src
+
+**** Home Helper Function
+
+Generates HomeManager configurations for each user.
+
+#+name: home-helper-function
+#+begin_src nix
+  mkHomes =
+    users:
+    inputs.nixpkgs.lib.genAttrs (builtins.attrNames users) (
+      name:
+      let
+        parts = builtins.split "@" name;
+        username = builtins.elemAt parts 0;
+        hostname = builtins.elemAt parts 2;
+      in
+      inputs.home-manager.lib.homeManagerConfiguration {
+        inherit pkgs;
+        modules = [ ./home/${username}/${hostname} ] ++ users.${name}.extraModules or [ ];
+        extraSpecialArgs = { inherit username hostname; };
+      }
+    );
+#+end_src
+
 * NixOS
 
-** Common Configuration
+** Common Host Configuration
 
 *** Generic
 
@@ -383,7 +407,7 @@ This is my laptop specific configuration.
 This configures the file systems for the laptop, including boot and
 root.
 
-#+begin_src nix :tangle hosts/laptop/filesystems.nix
+#+begin_src nix :tangle hosts/laptop/filesystem.nix
   { ... }:
 
   {
@@ -476,59 +500,41 @@ This is my desktop specific configuration.
   }
 #+end_src
 
-*** Test VM
-
-#+begin_src nix :tangle hosts/vm/default.nix
-  { ... }:
-
-  {
-    imports = [
-      ../common/generic.nix
-      ../common/boot.nix
-      ../common/users.nix
-      ../common/shell.nix
-      ../common/networking.nix
-      ../common/hyprland.nix
-      ../common/printing.nix
-    ];
-    
-    virtualisation.vmVariant = {
-      virtualisation = {
-        cores = 4;
-        memorySize = 8192;
-        qemu.options = [ "-vga qxl" ];
-      };
-
-      users.users."miko".initialPassword = "test";
-    };
-  }
-#+end_src
-
 * HomeManager
 
-** Common
+** Common Home Configuration
 
-#+begin_src nix :tangle home/common/default.nix
-  {... }:
+#+begin_src nix :tangle home/common/generic.nix
+  { user, ... }:
 
   {
-    imports = [
-      # Programs
-      ./emacs.nix
-      ./kitty.nix
-      ./hyprland.nix
-    ];
+    # Basic HomeManager config
+    home = {
+      username = user;
+      homeDirectory = "/home/${user}";
+      # Do not change this
+      home.stateVersion = "24.11";
+    };
+
+    # Let HomeManager install itself
+    programs.home-manager.enable = true;
+
+    # Let fonts be managed by HomeManager
+    fonts.fontconfig.enable = true;
+
+    # Reload services on config switch
+    systemd.user.startServices = "sd-switch";
   }
 #+end_src
 
-** Programs
+*** Programs
 
-*** Emacs
+**** Emacs
 
 This is my init.el, which gets tangled directly into the =extraConfig=
 option of my nix config.
 
-**** Backup & Autosave Behavior
+***** Backup & Autosave Behavior
 
 This changes the backup and autosave directories, so no annoying files
 pop up in my projects.
@@ -549,7 +555,7 @@ pop up in my projects.
           `((".*" ,(concat autosave-dir "/\\1") t))))
 #+end_src
 
-**** Look & Feel
+***** Look & Feel
 
 This sets the catpuccin theme, sets a font and then disables all gui
 elements.
@@ -569,7 +575,7 @@ elements.
   (tool-bar-mode -1)
 #+end_src
 
-**** Tab Behavior
+***** Tab Behavior
 
 This sets the indenting mode to spaces instead of tabs and gives the
 tabs a width of 4.
@@ -583,7 +589,7 @@ tabs a width of 4.
   (setq-default tab-width 4)
 #+end_src
 
-**** Code Editing
+***** Code Editing
 
 This section sets up emacs as a lightweight IDE with autocompletion.
 
@@ -624,7 +630,7 @@ This section sets up emacs as a lightweight IDE with autocompletion.
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 
-**** Nix Config
+***** Nix Config
 
 Here I define the Emacs config for nix which includes packages.
 
@@ -656,7 +662,7 @@ Here I define the Emacs config for nix which includes packages.
   }
 #+end_src
 
-*** Kitty
+**** Kitty
 
 #+begin_src nix :tangle home/common/kitty.nix
   { pkgs, ... }:
@@ -684,7 +690,7 @@ Here I define the Emacs config for nix which includes packages.
   }
 #+end_src
 
-*** Hyprland
+**** Hyprland
 
 #+begin_src nix :tangle home/common/hyprland.nix
   { pkgs, ... }:
@@ -901,3 +907,4 @@ Here I define the Emacs config for nix which includes packages.
     };
   }
 #+end_src
+
