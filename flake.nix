@@ -67,6 +67,15 @@
           inputs.nixos-hardware.nixosModules.common-gpu-amd
           inputs.nixos-hardware.nixosModules.common-pc-ssd
         ];
+        "vm".extraModules = [
+          inputs.home-manager.nixosModules.home-manager
+          {
+            home-manager.users."miko" = {
+              imports = [ ./home/common ];
+              home.stateVersion = "24.11";
+            };
+          }
+        ];
       };
 
       homeConfigurations = mkHomeManagerConfigs {

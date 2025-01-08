@@ -82,6 +82,15 @@ config. The configs are defined as flake outputs.
             inputs.nixos-hardware.nixosModules.common-gpu-amd
             inputs.nixos-hardware.nixosModules.common-pc-ssd
           ];
+          "vm".extraModules = [
+            inputs.home-manager.nixosModules.home-manager
+            {
+              home-manager.users."miko" = {
+                imports = [ ./home/common ];
+                home.stateVersion = "24.11";
+              };
+            }
+          ];
         };
 
         homeConfigurations = mkHomeManagerConfigs {
@@ -464,6 +473,34 @@ This is my desktop specific configuration.
         size = 32 * 1024;
       }
     ];
+  }
+#+end_src
+
+*** Test VM
+
+#+begin_src nix :tangle hosts/vm/default.nix
+  { ... }:
+
+  {
+    imports = [
+      ../common/generic.nix
+      ../common/boot.nix
+      ../common/users.nix
+      ../common/shell.nix
+      ../common/networking.nix
+      ../common/hyprland.nix
+      ../common/printing.nix
+    ];
+    
+    virtualisation.vmVariant = {
+      virtualisation = {
+        cores = 4;
+        memorySize = 8192;
+        qemu.options = [ "-vga qxl" ];
+      };
+
+      users.users."miko".initialPassword = "test";
+    };
   }
 #+end_src
 
