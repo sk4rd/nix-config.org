@@ -1,6 +1,12 @@
 { username, ... }:
 
 {
+  imports = [
+    ./emacs.nix
+    ./kitty.nix
+    ./hyprland.nix
+  ];
+
   # Basic HomeManager config
   home = {
     username = username;
@@ -17,4 +23,5 @@
 
   # Reload services on config switch
   systemd.user.startServices = "sd-switch";
+
 }

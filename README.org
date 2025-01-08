@@ -503,16 +503,22 @@ This is my desktop specific configuration.
 
 ** Common Home Configuration
 
-#+begin_src nix :tangle home/common/generic.nix
-  { user, ... }:
+#+begin_src nix :tangle home/common/default.nix
+  { username, ... }:
 
   {
+    imports = [
+      ./emacs.nix
+      ./kitty.nix
+      ./hyprland.nix
+    ];
+
     # Basic HomeManager config
     home = {
-      username = user;
-      homeDirectory = "/home/${user}";
+      username = username;
+      homeDirectory = "/home/${username}";
       # Do not change this
-      home.stateVersion = "24.11";
+      stateVersion = "24.11";
     };
 
     # Let HomeManager install itself
@@ -523,6 +529,7 @@ This is my desktop specific configuration.
 
     # Reload services on config switch
     systemd.user.startServices = "sd-switch";
+
   }
 #+end_src
 
@@ -907,3 +914,16 @@ Here I define the Emacs config for nix which includes packages.
   }
 #+end_src
 
+** miko@desktop
+
+Configuration specific to my desktop.
+
+#+begin_src nix :tangle home/miko/desktop/default.nix
+  { ... }:
+
+  {
+    imports = [ ../../common ];
+  }
+#+end_src
+
+** miko@laptop
