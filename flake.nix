@@ -40,7 +40,7 @@
           inputs.home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [ ./home/${username}/${hostname} ] ++ users.${name}.extraModules or [ ];
-            extraSpecialArgs = { inherit username hostname; };
+            extraSpecialArgs = { inherit username hostname; }; # Pass username and hostname to modules
           }
         );
     in
