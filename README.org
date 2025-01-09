@@ -563,6 +563,34 @@ This is my desktop specific configuration.
   }
 #+end_src
 
+**** Kitty
+
+#+begin_src nix :tangle home/common/kitty.nix
+  { pkgs, ... }:
+
+  {
+    programs.kitty = {
+      enable = true;
+      shellIntegration.enableZshIntegration = true;
+
+      font = {
+        package = (pkgs.nerdfonts.override { fonts = [ "IBMPlexMono" ]; });
+        name = "BlexMono Nerd Font";
+        size = 10;
+      };
+
+      settings = {
+        enable_audio_bell = false;
+        window_margin_width = 8;
+      };
+
+      extraConfig = ''
+        background_opacity 0.85
+      '';
+    };
+  }
+#+end_src
+
 **** Emacs
 
 This is my init.el, which gets tangled directly into the =extraConfig=
@@ -691,34 +719,6 @@ Here I define the Emacs config for nix which includes packages.
         <<tab-behavior>>
 
         <<code-editing>>
-      '';
-    };
-  }
-#+end_src
-
-**** Kitty
-
-#+begin_src nix :tangle home/common/kitty.nix
-  { pkgs, ... }:
-
-  {
-    programs.kitty = {
-      enable = true;
-      shellIntegration.enableZshIntegration = true;
-
-      font = {
-        package = (pkgs.nerdfonts.override { fonts = [ "IBMPlexMono" ]; });
-        name = "BlexMono Nerd Font";
-        size = 10;
-      };
-
-      settings = {
-        enable_audio_bell = false;
-        window_margin_width = 8;
-      };
-
-      extraConfig = ''
-        background_opacity 0.85
       '';
     };
   }
