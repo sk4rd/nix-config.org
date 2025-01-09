@@ -12,6 +12,7 @@
       plugins = [
         "sudo"
         "git"
+        "z"
       ];
     };
   };
