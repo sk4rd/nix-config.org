@@ -41,9 +41,11 @@ outputs.
     <<flake-inputs>>
 
     outputs =
-      { self, ... }@inputs:
+      { nixpkgs, home-manager, nixos-hardware, ... }:
       let
         <<system-and-packages>>
+
+        <<extend-lib>>
 
         <<host-helper-function>>
 
@@ -51,11 +53,11 @@ outputs.
       in
       {
         nixosConfigurations = mkHosts {
-          "laptop".extraModules = [ inputs.nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1 ];
+          "laptop".extraModules = [ nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1 ];
           "desktop".extraModules = [
-            inputs.nixos-hardware.nixosModules.common-cpu-amd
-            inputs.nixos-hardware.nixosModules.common-gpu-amd
-            inputs.nixos-hardware.nixosModules.common-pc-ssd
+            nixos-hardware.nixosModules.common-cpu-amd
+            nixos-hardware.nixosModules.common-gpu-amd
+            nixos-hardware.nixosModules.common-pc-ssd
           ];
         };
 
@@ -74,7 +76,7 @@ Configures the system type and enables unfree software.
 #+name: system-and-packages
 #+begin_src nix
   system = "x86_64-linux";
-  pkgs = import inputs.nixpkgs {
+  pkgs = import nixpkgs {
     inherit system;
     config.allowUnfree = true;
   };
@@ -92,12 +94,12 @@ Generates NixOS configurations for each host.
 #+begin_src nix
   mkHosts =
     systems:
-    inputs.nixpkgs.lib.genAttrs (builtins.attrNames systems) (
+    nixpkgs.lib.genAttrs (builtins.attrNames systems) (
       name:
-      inputs.nixpkgs.lib.nixosSystem {
+      nixpkgs.lib.nixosSystem {
         inherit pkgs;
         modules = [ ./hosts/${name} ] ++ systems.${name}.extraModules or [ ];
-        specialArgs = { hostname = name; }; # Pass hostname to modules
+        specialArgs = { inherit lib; hostname = name; }; # Pass hostname to modules
       }
     );
 #+end_src
@@ -110,19 +112,37 @@ Generates HomeManager configurations for each user.
 #+begin_src nix
   mkHomes =
     users:
-    inputs.nixpkgs.lib.genAttrs (builtins.attrNames users) (
+    nixpkgs.lib.genAttrs (builtins.attrNames users) (
       name:
       let
         parts = builtins.split "@" name;
         username = builtins.elemAt parts 0;
         hostname = builtins.elemAt parts 2;
       in
-      inputs.home-manager.lib.homeManagerConfiguration {
+      home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home/${username}/${hostname} ] ++ users.${name}.extraModules or [ ];
-        extraSpecialArgs = { inherit username hostname; }; # Pass username and hostname to modules
+        extraSpecialArgs = { inherit lib username hostname; }; # Pass username and hostname to modules
       }
     );
+#+end_src
+
+*** Extending the Library
+
+#+name: extend-lib
+#+begin_src nix
+  mkLib = nixpkgs:
+    nixpkgs.lib.extend (final: prev: (import ./lib final) // home-manager.lib);
+
+  lib = mkLib nixpkgs;
+#+end_src
+
+* Nix Lib
+
+#+begin_src nix :tangle lib/default.nix
+  lib: {
+    enableAll = builtins.mapAttrs (name: value: { enable = true; });
+  }
 #+end_src
 
 * NixOS
