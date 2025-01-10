@@ -1,4 +1,4 @@
-{ ... }:
+{ lib, ... }:
 
 {
   # Imports of programs with larger configs
@@ -11,7 +11,7 @@
   ];
 
   # Programs with short or simple configs which are automatically enabled
-  programs = builtins.mapAttrs (name: value: { enable = true; }) {
+  programs = lib.enableAll {
     bat = { };
     btop = { };
     imv = { };
