@@ -12,17 +12,7 @@
       ];
 
       # Autostarted programs
-      exec-once =
-        let
-          polkit-agent = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
-        in
-        [
-          polkit-agent
-          "emacs --daemon"
-          "mako"
-          "blueman-applet"
-          "ags"
-        ];
+      exec-once = [ "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1" ];
 
       # Modifier key set to SUPER
       "$mod" = "SUPER";
