@@ -952,28 +952,6 @@ Here I define the Emacs config for nix which includes packages.
           "float,^(steam)$"
           "float,^(org.kde.polkit-kde-authentication-agent-1)$"
         ];
-
-        # New window rules
-        windowrulev2 =
-          let
-            bluemanClass = "class:^(.blueman-manager-wrapped)$";
-            thunarClass = "class:^(thunar)$";
-          in
-          [
-            # Blueman
-            "float, ${bluemanClass}"
-            "pin, ${bluemanClass}"
-            "noborder, ${bluemanClass}"
-            "rounding 0, ${bluemanClass}"
-            "size 500 600, ${bluemanClass}"
-            "move 100%-500 40, ${bluemanClass}"
-
-            # Thunar
-            "float, ${thunarClass}"
-            "size 50% 50%, ${thunarClass}"
-            "center, ${thunarClass}"
-          ];
-
       };
       extraConfig = ''
         # Submap for window resizing
