@@ -2,9 +2,7 @@
 
 {
   imports = [
-    ./emacs.nix
-    ./kitty.nix
-    ./hyprland.nix
+    ./programs.nix
   ];
 
   # Basic HomeManager config

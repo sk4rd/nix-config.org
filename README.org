@@ -529,9 +529,7 @@ This is my desktop specific configuration.
 
   {
     imports = [
-      ./emacs.nix
-      ./kitty.nix
-      ./hyprland.nix
+      ./programs.nix
     ];
 
     # Basic HomeManager config
