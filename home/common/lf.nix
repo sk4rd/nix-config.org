@@ -10,7 +10,7 @@ in
     keybindings = {
       "." = "set hidden!";
       gr = "cd /";
-      gh = "cd ${cfg.home.homeDirectory}";
+      gh = "cd ${config.home.homeDirectory}";
       gdl = "cd ${userDirs.download}";
       gdo = "cd ${userDirs.documents}";
       gp = "cd ${userDirs.pictures}";
@@ -28,3 +28,4 @@ in
       &${pkgs.ctpv}/bin/ctpvquit $id
     '';
   };
+}

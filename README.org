@@ -651,7 +651,7 @@ This is my desktop specific configuration.
       keybindings = {
         "." = "set hidden!";
         gr = "cd /";
-        gh = "cd ${cfg.home.homeDirectory}";
+        gh = "cd ${config.home.homeDirectory}";
         gdl = "cd ${userDirs.download}";
         gdo = "cd ${userDirs.documents}";
         gp = "cd ${userDirs.pictures}";
@@ -669,6 +669,7 @@ This is my desktop specific configuration.
         &${pkgs.ctpv}/bin/ctpvquit $id
       '';
     };
+  }
 #+end_src
 
 **** Emacs
