@@ -17,4 +17,9 @@ in
       (if config.virtualisation.docker.enable then "docker" else "")
     ];
   };
+
+  # Give the user the password 'test' in a vm
+  virtualisation.vmVariant = {
+    users.users.${username}.password = "test";
+  };
 }
