@@ -840,12 +840,11 @@ Here I define the Emacs config for nix which includes packages.
         # Keybindings
         bind = [
           # Programs
-          "$mod, Q, exec, kitty"
-          "$mod, R, exec, tofi-drun | bash"
-          "$mod, W, exec, brave"
-          "$mod, E, exec, kitty -e hx"
-          "$mod, F, exec, nautilus"
-          "$mod, N, exec, logseq"
+          "$mod, Q, exec, ${pkgs.kitty}/bin/kitty"
+          "$mod, R, exec, ${pkgs.tofi}/bin/tofi-run | bash"
+          "$mod, W, exec, ${pkgs.brave}/bin/brave"
+          "$mod, F, exec, ${pkgs.nautilus}/bin/nautilus"
+          "$mod, N, exec, ${pkgs.logseq}/bin/logseq"
 
           # Screenshot
           "$mod SHIFT, S, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp -d)\" - | ${pkgs.wl-clipboard}/bin/wl-copy"
