@@ -85,7 +85,7 @@ Configures the system type and enables unfree software.
 *** Helper Functions
 
 Helper functions simplify creating configurations for hosts and users.
- 
+
 **** Host Helper Function
 
 Generates NixOS configurations for each host.
@@ -758,16 +758,16 @@ This section sets up emacs as a lightweight IDE with autocompletion.
 
   ;; Set up eglot lsp
   (with-eval-after-load 'eglot
-    (add-to-list 'eglot-server-programs
-                 '(nix-mode . ("${pkgs.nil}/bin/nil"))))
+    (add-to-list 'eglot-server-programs '(nix-mode . ("${pkgs.nil}/bin/nil")))
     (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("${pkgs.llvmPackages.clang-tools}/bin/clangd"))))
 
-  (with-eval-after-load 'nix-mode
-    (setq nix-nixfmt-bin "${pkgs.nixfmt-rfc-style}/bin/nixfmt")
-    (add-hook 'nix-mode-hook 'eglot-ensure)
-    (add-hook 'nix-mode-hook
+  ;; Set up nix mode
+  (add-hook 'nix-mode-hook
               (lambda ()
-                (add-hook 'before-save-hook #'nix-format-buffer nil t))))
+                (setq nix-nixfmt-bin "${pkgs.nixfmt-rfc-style}/bin/nixfmt")
+                (eglot-ensure)
+                (add-hook 'before-save-hook #'nix-format-buffer nil t)))
+
   ;; Set up c mode
   (add-hook 'c-mode-hook 'eglot-ensure)
 

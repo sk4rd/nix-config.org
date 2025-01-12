@@ -59,21 +59,22 @@
       
       ;; Set up eglot lsp
       (with-eval-after-load 'eglot
-        (add-to-list 'eglot-server-programs
-                     '(nix-mode . ("${pkgs.nil}/bin/nil"))))
+        (add-to-list 'eglot-server-programs '(nix-mode . ("${pkgs.nil}/bin/nil")))
         (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("${pkgs.llvmPackages.clang-tools}/bin/clangd"))))
       
-      (with-eval-after-load 'nix-mode
-        (setq nix-nixfmt-bin "${pkgs.nixfmt-rfc-style}/bin/nixfmt")
-        (add-hook 'nix-mode-hook 'eglot-ensure)
-        (add-hook 'nix-mode-hook
+      ;; Set up nix mode
+      (add-hook 'nix-mode-hook
                   (lambda ()
-                    (add-hook 'before-save-hook #'nix-format-buffer nil t))))
+                    (setq nix-nixfmt-bin "${pkgs.nixfmt-rfc-style}/bin/nixfmt")
+                    (eglot-ensure)
+                    (add-hook 'before-save-hook #'nix-format-buffer nil t)))
+      
       ;; Set up c mode
       (add-hook 'c-mode-hook 'eglot-ensure)
       
       ;; Set up c++ mode
       (add-hook 'c++-mode-hook 'eglot-ensure)
+      
       ;; Line numbers
       (autoload 'display-line-numbers-mode "display-line-numbers" "View line numbers." t)
       (with-eval-after-load 'display-line-numbers
