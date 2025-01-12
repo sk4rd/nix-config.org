@@ -570,11 +570,9 @@ This is my desktop specific configuration.
       ./lf.nix
     ];
 
-    # Let HomeManager install itself
-    programs.home-manager.enable = true;
-
     # Programs with short or simple configs which are automatically enabled
     programs = lib.enableAll {
+      home-manager = { }; # Let HomeManager install itself
       bat = { };
       btop = { };
       imv = { };
@@ -789,7 +787,7 @@ This section sets up emacs as a lightweight IDE with autocompletion.
 
 Here I define the Emacs config for nix which includes packages.
 
-#+begin_src nix :tangle home/common/emacs.nix :noweb yes
+#+begin_src nix :tangle home/common/programs/emacs.nix :noweb yes
   { pkgs, ... }:
 
   {
@@ -1046,7 +1044,7 @@ Here I define the Emacs config for nix which includes packages.
 **** Hypridle
 
 #+begin_src nix :tangle home/common/services/hypridle.nix
-  { ... }:
+  { pkgs, ... }:
 
   {
     # Hypridle configuration

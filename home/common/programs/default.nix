@@ -10,11 +10,9 @@
     ./lf.nix
   ];
 
-  # Let HomeManager install itself
-  programs.home-manager.enable = true;
-
   # Programs with short or simple configs which are automatically enabled
   programs = lib.enableAll {
+    home-manager = { }; # Let HomeManager install itself
     bat = { };
     btop = { };
     imv = { };
