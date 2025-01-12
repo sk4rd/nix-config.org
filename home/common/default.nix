@@ -3,6 +3,7 @@
 {
   imports = [
     ./programs
+    ./services
   ];
 
   # Basic HomeManager config

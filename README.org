@@ -535,6 +535,7 @@ This is my desktop specific configuration.
   {
     imports = [
       ./programs
+      ./services
     ];
 
     # Basic HomeManager config
@@ -998,6 +999,81 @@ Here I define the Emacs config for nix which includes packages.
 
         submap=reset
       '';
+    };
+  }
+#+end_src
+
+*** Services
+
+#+begin_src nix :tangle home/common/services/default.nix
+  { lib, ... }:
+
+  {
+    imports = [
+      ./gpg-agent.nix
+      ./hypridle.nix
+    ];
+
+    services = lib.enableAll {
+      ssh-agent = { };
+      hyprpaper = { };
+      syncthing.extraOptions = [ "--no-default-folder" ];
+    };
+  }
+#+end_src
+
+**** gpg-agent
+
+#+begin_src nix :tangle home/common/services/gpg-agent.nix
+  { ... }:
+
+  let
+    sshKey = "AFA1F0631CECE62F"; # Set to your own key
+  in
+  {
+    # GPG agent configuration
+    services.gpg-agent = {
+      enable = true;
+      enableScDaemon = true;
+
+      # Enable SSH key support
+      enableSshSupport = true;
+      sshKeys = [ sshKey ];
+    };
+  }
+#+end_src
+
+**** Hypridle
+
+#+begin_src nix :tangle home/common/services/hypridle.nix
+  { ... }:
+
+  {
+    # Hypridle configuration
+    services.hypridle = {
+      enable = true;
+      settings = {
+        listener = [
+          {
+            timeout = 300;
+            on-timeout = "loginctl lock-session";
+          }
+          {
+            timeout = 360;
+            on-timeout = "hyprctl dispatch dpms off";
+            on-resume = "hyprctl dispatch dpms on";
+          }
+          {
+            timeout = 600;
+            on-timeout = "systemctl suspend";
+          }
+        ];
+
+        general = {
+          lock_cmd = "${pkgs.hyprlock}/bin/hyprlock";
+          before_sleep_cmd = "loginctl lock-session";
+        };
+      };
     };
   }
 #+end_src
