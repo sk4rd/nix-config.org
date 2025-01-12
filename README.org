@@ -534,7 +534,7 @@ This is my desktop specific configuration.
 
   {
     imports = [
-      ./programs.nix
+      ./programs
     ];
 
     # Basic HomeManager config
@@ -544,9 +544,6 @@ This is my desktop specific configuration.
       # Do not change this
       stateVersion = "24.11";
     };
-
-    # Let HomeManager install itself
-    programs.home-manager.enable = true;
 
     # Let fonts be managed by HomeManager
     fonts.fontconfig.enable = true;
@@ -559,7 +556,7 @@ This is my desktop specific configuration.
 
 *** Programs
 
-#+begin_src nix :tangle home/common/programs.nix
+#+begin_src nix :tangle home/common/programs/default.nix
   { lib, ... }:
 
   {
@@ -571,6 +568,9 @@ This is my desktop specific configuration.
       ./kitty.nix
       ./lf.nix
     ];
+
+    # Let HomeManager install itself
+    programs.home-manager.enable = true;
 
     # Programs with short or simple configs which are automatically enabled
     programs = lib.enableAll {
@@ -588,7 +588,7 @@ This is my desktop specific configuration.
 
 **** Git
 
-#+begin_src nix :tangle home/common/git.nix
+#+begin_src nix :tangle home/common/programs/git.nix
   { pkgs, ... }:
 
   let
@@ -615,7 +615,7 @@ This is my desktop specific configuration.
 
 **** Kitty
 
-#+begin_src nix :tangle home/common/kitty.nix
+#+begin_src nix :tangle home/common/programs/kitty.nix
   { pkgs, ... }:
 
   {
@@ -643,7 +643,7 @@ This is my desktop specific configuration.
 
 **** LF
 
-#+begin_src nix :tangle home/common/lf.nix
+#+begin_src nix :tangle home/common/programs/lf.nix
   { config, pkgs, ... }:
 
   let
@@ -818,7 +818,7 @@ Here I define the Emacs config for nix which includes packages.
 
 **** Hyprland
 
-#+begin_src nix :tangle home/common/hyprland.nix
+#+begin_src nix :tangle home/common/programs/hyprland.nix
   { pkgs, ... }:
 
   {

@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ./programs.nix
+    ./programs
   ];
 
   # Basic HomeManager config
@@ -12,9 +12,6 @@
     # Do not change this
     stateVersion = "24.11";
   };
-
-  # Let HomeManager install itself
-  programs.home-manager.enable = true;
 
   # Let fonts be managed by HomeManager
   fonts.fontconfig.enable = true;
