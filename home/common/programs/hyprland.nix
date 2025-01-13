@@ -24,7 +24,6 @@
         "$mod, R, exec, ${pkgs.tofi}/bin/tofi-run | bash"
         "$mod, W, exec, ${pkgs.brave}/bin/brave"
         "$mod, F, exec, ${pkgs.nautilus}/bin/nautilus"
-        "$mod, N, exec, ${pkgs.logseq}/bin/logseq"
 
         # Screenshot
         "$mod SHIFT, S, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp -d)\" - | ${pkgs.wl-clipboard}/bin/wl-copy"
