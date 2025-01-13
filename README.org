@@ -783,6 +783,14 @@ This section sets up emacs as a lightweight IDE with autocompletion.
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 
+***** Keybindings
+
+#+name: keybindings
+#+begin_src elisp
+  ;; Set default keybindings for window movement
+  (windmove-default-keybindings)
+#+end_src
+
 ***** Nix Config
 
 Here I define the Emacs config for nix which includes packages.
@@ -810,6 +818,8 @@ Here I define the Emacs config for nix which includes packages.
         <<tab-behavior>>
 
         <<code-editing>>
+
+        <<keybindings>>
       '';
     };
   }

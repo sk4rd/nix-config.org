@@ -83,6 +83,9 @@
       
       ;; Remove trailing whitespace
       (add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+      ;; Set default keybindings for window movement
+      (windmove-default-keybindings)
     '';
   };
 }
