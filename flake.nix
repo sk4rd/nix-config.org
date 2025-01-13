@@ -6,10 +6,18 @@
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
+    hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs =
-    { nixpkgs, home-manager, nixos-hardware, ... }:
+    {
+      nixpkgs,
+      home-manager,
+      nixos-hardware,
+      hyprpanel,
+      ...
+    }:
     let
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -60,8 +68,8 @@
       };
 
       homeConfigurations = mkHomes {
-        "miko@laptop" = { };
-        "miko@desktop" = { };
+        "miko@laptop".extraModules = [ hyprpanel.homeManagerModules.hyprpanel ];
+        "miko@desktop".extraModules = [ hyprpanel.homeManagerModules.hyprpanel ];
       };
     };
 }

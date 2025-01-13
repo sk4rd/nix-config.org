@@ -26,6 +26,8 @@ Dependencies for the configuration, including:
     home-manager.url = "github:nix-community/home-manager/release-24.11";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
+    hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
   };
 #+end_src
 
@@ -41,7 +43,13 @@ outputs.
     <<flake-inputs>>
 
     outputs =
-      { nixpkgs, home-manager, nixos-hardware, ... }:
+      {
+        nixpkgs,
+        home-manager,
+        nixos-hardware,
+        hyprpanel,
+        ...
+      }:
       let
         <<system-and-packages>>
 
@@ -62,8 +70,8 @@ outputs.
         };
 
         homeConfigurations = mkHomes {
-          "miko@laptop" = { };
-          "miko@desktop" = { };
+          "miko@laptop".extraModules = [ hyprpanel.homeManagerModules.hyprpanel ];
+          "miko@desktop".extraModules = [ hyprpanel.homeManagerModules.hyprpanel ];
         };
       };
   }
@@ -566,6 +574,7 @@ This is my desktop specific configuration.
       ./emacs.nix
       ./git.nix
       ./hyprland.nix
+      ./hyprpanel.nix
       ./kitty.nix
       ./lf.nix
     ];
@@ -1006,6 +1015,22 @@ Here I define the Emacs config for nix which includes packages.
 
         submap=reset
       '';
+    };
+  }
+#+end_src
+
+**** Hyprpanel
+
+#+begin_src nix :tangle home/common/programs/hyprpanel.nix
+  { ... }:
+
+  {
+    programs.hyprpanel = {
+      enable = true;
+      overlay.enable = true;
+      systemd.enable = true;
+      hyprland.enable = true;
+      overwrite.enable = true;
     };
   }
 #+end_src

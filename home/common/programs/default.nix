@@ -6,6 +6,7 @@
     ./emacs.nix
     ./git.nix
     ./hyprland.nix
+    ./hyprpanel.nix
     ./kitty.nix
     ./lf.nix
   ];
