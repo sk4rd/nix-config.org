@@ -23,6 +23,9 @@
     fontDir.enable = true;
   };
 
+  # Enable firmware
+  hardware.enableAllFirmware = true;
+
   # Do not change this after building your system
   system.stateVersion = "24.11";
 }
