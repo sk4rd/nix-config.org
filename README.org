@@ -434,6 +434,7 @@ This is my laptop specific configuration.
 
       ./kernelModules.nix
       ./filesystem.nix
+      ./services
     ];
   }
 #+end_src
@@ -483,6 +484,18 @@ This includes kernel modules needed for specific hardware support.
       "usb_storage"
       "sd_mod"
     ];
+  }
+#+end_src
+
+*** Services
+
+#+begin_src nix :tangle hosts/laptop/services/default.nix
+  { lib, ... }:
+
+  {
+    services = lib.enableAll {
+      power-profiles-daemon = { };
+    };
   }
 #+end_src
 

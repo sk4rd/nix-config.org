@@ -16,5 +16,6 @@
 
     ./kernelModules.nix
     ./filesystem.nix
+    ./services
   ];
 }
