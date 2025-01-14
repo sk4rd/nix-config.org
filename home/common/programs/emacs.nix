@@ -11,6 +11,8 @@
       catppuccin-theme
       nix-mode
       magit
+      org-roam
+      org-roam-ui
     ];
     extraConfig = ''
       ;; Backup directory in ~/.emacs.d/backups
@@ -84,8 +86,22 @@
       ;; Remove trailing whitespace
       (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
+      (require 'org)
+      (with-eval-after-load 'org-roam
+        (setq org-roam-directory (file-truename "~/docs/notes"))
+        (setq org-roam-completion-everywhere t)
+        (org-roam-db-autosync-mode))
+
       ;; Set default keybindings for window movement
       (windmove-default-keybindings)
+      
+      ;; Set keybinds for org-roam
+      (global-set-key (kbd "C-c n l") #'org-roam-buffer-toggle)
+      (global-set-key (kbd "C-c n f") #'org-roam-node-find)
+      (global-set-key (kbd "C-c n i") #'org-roam-node-insert)
+      (global-set-key (kbd "C-c n c") #'org-roam-capture)
+      (global-set-key (kbd "C-c n j") #'org-roam-dailies-capture-today)
+      (global-set-key (kbd "C-c n t") #'org-roam-dailies-goto-today)
     '';
   };
 }

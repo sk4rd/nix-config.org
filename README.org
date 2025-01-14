@@ -795,12 +795,30 @@ This section sets up emacs as a lightweight IDE with autocompletion.
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+end_src
 
+***** Org Roam
+
+#+name: org-roam
+#+begin_src elisp
+  (require 'org)
+  (with-eval-after-load 'org-roam
+    (setq org-roam-directory (file-truename "~/docs/notes"))
+    (setq org-roam-completion-everywhere t)
+    (org-roam-db-autosync-mode))
+#+end_src
 ***** Keybindings
 
 #+name: keybindings
 #+begin_src elisp
   ;; Set default keybindings for window movement
   (windmove-default-keybindings)
+
+  ;; Set keybinds for org-roam
+  (global-set-key (kbd "C-c n l") #'org-roam-buffer-toggle)
+  (global-set-key (kbd "C-c n f") #'org-roam-node-find)
+  (global-set-key (kbd "C-c n i") #'org-roam-node-insert)
+  (global-set-key (kbd "C-c n c") #'org-roam-capture)
+  (global-set-key (kbd "C-c n j") #'org-roam-dailies-capture-today)
+  (global-set-key (kbd "C-c n t") #'org-roam-dailies-goto-today)
 #+end_src
 
 ***** Nix Config
@@ -821,6 +839,8 @@ Here I define the Emacs config for nix which includes packages.
         catppuccin-theme
         nix-mode
         magit
+        org-roam
+        org-roam-ui
       ];
       extraConfig = ''
         <<backup-and-autosave>>
@@ -830,6 +850,8 @@ Here I define the Emacs config for nix which includes packages.
         <<tab-behavior>>
 
         <<code-editing>>
+
+        <<org-roam>>
 
         <<keybindings>>
       '';
