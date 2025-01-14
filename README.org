@@ -805,10 +805,14 @@ This section sets up emacs as a lightweight IDE with autocompletion.
     (setq org-roam-completion-everywhere t)
     (org-roam-db-autosync-mode))
 #+end_src
+
 ***** Keybindings
 
 #+name: keybindings
 #+begin_src elisp
+  ;; Enable which-key-mode globally
+  (which-key-mode)
+
   ;; Set default keybindings for window movement
   (windmove-default-keybindings)
 

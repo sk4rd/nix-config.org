@@ -92,6 +92,9 @@
         (setq org-roam-completion-everywhere t)
         (org-roam-db-autosync-mode))
 
+      ;; Enable which-key-mode globally
+      (which-key-mode)
+      
       ;; Set default keybindings for window movement
       (windmove-default-keybindings)
       
