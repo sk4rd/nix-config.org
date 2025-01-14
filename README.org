@@ -414,6 +414,20 @@ This configures virtualisation options like Docker and libvirtd.
   }
 #+end_src
 
+*** GPG
+
+#+begin_src nix :tangle hosts/common/gpg.nix
+  { pkgs, ... }:
+
+  {
+    programs.gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+      enableBrowserSocket = true;
+    };
+  }
+#+end_src
+
 ** Laptop
 
 This is my laptop specific configuration.
@@ -434,6 +448,7 @@ This is my laptop specific configuration.
       ../common/controllers.nix
       ../common/hyprland.nix
       ../common/printing.nix
+      ../common/gpg.nix
 
       ./kernelModules.nix
       ./filesystem.nix
@@ -521,6 +536,7 @@ This is my desktop specific configuration.
       ../common/controllers.nix
       ../common/hyprland.nix
       ../common/printing.nix
+      ../common/gpg.nix
 
       ./filesystem.nix
     ];
@@ -1101,16 +1117,18 @@ Here I define the Emacs config for nix which includes packages.
 **** gpg-agent
 
 #+begin_src nix :tangle home/common/services/gpg-agent.nix
-  { ... }:
+  { pkgs, ... }:
 
   let
     sshKey = "AFA1F0631CECE62F"; # Set to your own key
   in
   {
+
     # GPG agent configuration
     services.gpg-agent = {
       enable = true;
       enableScDaemon = true;
+      pinentryPackage = pkgs.pinentry-qt;
 
       # Enable SSH key support
       enableSshSupport = true;

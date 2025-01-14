@@ -13,6 +13,7 @@
     ../common/controllers.nix
     ../common/hyprland.nix
     ../common/printing.nix
+    ../common/gpg.nix
 
     ./kernelModules.nix
     ./filesystem.nix
