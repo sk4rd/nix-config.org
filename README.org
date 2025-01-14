@@ -28,6 +28,8 @@ Dependencies for the configuration, including:
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
+    wallpapers.url = "git+https://codeberg.org/sk4rd/wallpapers.git";
+    wallpapers.flake = false;
   };
 #+end_src
 
@@ -48,6 +50,7 @@ outputs.
         home-manager,
         nixos-hardware,
         hyprpanel,
+        wallpapers,
         ...
       }:
       let
@@ -130,7 +133,7 @@ Generates HomeManager configurations for each user.
       home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home/${username}/${hostname} ] ++ users.${name}.extraModules or [ ];
-        extraSpecialArgs = { inherit lib username hostname; }; # Pass username and hostname to modules
+        extraSpecialArgs = { inherit lib username hostname wallpapers; }; # Pass username and hostname to modules
       }
     );
 #+end_src
@@ -1162,6 +1165,7 @@ Configuration specific to my desktop.
     imports = [
       ../../common
       ./hyprland.nix
+      ./hyprpaper.nix
     ];
   }
 #+end_src
@@ -1195,6 +1199,31 @@ Configuration specific to my desktop.
           tablet.output = "DP-1";
         };
       };
+    };
+  }
+#+end_src
+
+*** Hyprpaper
+
+Set a wallpaper for hyprpaper.
+
+#+begin_src nix :tangle home/miko/desktop/hyprpaper.nix
+  { wallpapers, ... }:
+
+  let
+    wp1 = "${wallpapers}/pixel-art/dark-wizard.png";
+    wp2 = "${wallpapers}/pixel-art/dark-wizard-library.png";
+  in
+  {
+    services.hyprpaper.settings = {
+      preload = [
+        wp1
+        wp2
+      ];
+      wallpaper = [
+        "DP-1,${wp1}"
+        "HDMI-A-1,${wp2}"
+      ];
     };
   }
 #+end_src

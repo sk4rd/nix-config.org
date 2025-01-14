@@ -8,6 +8,8 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
+    wallpapers.url = "git+https://codeberg.org/sk4rd/wallpapers.git";
+    wallpapers.flake = false;
   };
 
   outputs =
@@ -16,6 +18,7 @@
       home-manager,
       nixos-hardware,
       hyprpanel,
+      wallpapers,
       ...
     }:
     let
@@ -53,7 +56,7 @@
           home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [ ./home/${username}/${hostname} ] ++ users.${name}.extraModules or [ ];
-            extraSpecialArgs = { inherit lib username hostname; }; # Pass username and hostname to modules
+            extraSpecialArgs = { inherit lib username hostname wallpapers; }; # Pass username and hostname to modules
           }
         );
     in
