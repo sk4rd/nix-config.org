@@ -9,6 +9,7 @@
     ./hyprpanel.nix
     ./kitty.nix
     ./lf.nix
+    ./tofi.nix
   ];
 
   # Programs with short or simple configs which are automatically enabled

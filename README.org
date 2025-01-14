@@ -612,6 +612,7 @@ This is my desktop specific configuration.
       ./hyprpanel.nix
       ./kitty.nix
       ./lf.nix
+      ./tofi.nix
     ];
 
     # Programs with short or simple configs which are automatically enabled
@@ -1091,6 +1092,24 @@ Here I define the Emacs config for nix which includes packages.
       systemd.enable = true;
       hyprland.enable = true;
       overwrite.enable = true;
+    };
+  }
+#+end_src
+
+**** Tofi
+
+#+begin_src nix :tangle home/common/programs/tofi.nix
+  { ... }:
+
+  {
+    programs.tofi = {
+      enable = true;
+      settings = {
+        font = "IBM Plex Mono";
+        font-size = "12";
+        width = "100%";
+        height = "30px";
+      };
     };
   }
 #+end_src
