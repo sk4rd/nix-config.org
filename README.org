@@ -251,30 +251,6 @@ shell.
   }
 #+end_src
 
-*** Shell
-
-#+begin_src nix :tangle hosts/common/shell.nix
-  { ... }:
-
-  {
-    programs.zsh = {
-      enable = true;
-      enableCompletion = true;
-      autosuggestions.enable = true;
-      syntaxHighlighting.enable = true;
-      ohMyZsh = {
-        enable = true;
-        theme = "candy";
-        plugins = [
-          "sudo"
-          "git"
-          "z"
-        ];
-      };
-    };
-  }
-#+end_src
-
 *** AMDGPU
 
 This section enables opencl and vulkan on amd gpus.
@@ -358,17 +334,88 @@ This configures virtualisation options like Docker and libvirtd.
   }
 #+end_src
 
-*** Hyprland Desktop Environment
+*** Programs
 
-#+begin_src nix :tangle hosts/common/hyprland.nix
+#+begin_src nix :tangle hosts/common/programs/default.nix
+  { pkgs, lib, ... }:
+
+  {
+    imports = [
+      ./zsh.nix
+      ./gpg-agent.nix
+    ];
+
+    environment.systemPackages = with pkgs; [
+      unzip
+    ];
+
+    programs = lib.enableAll {
+      hyprland = { };
+      hyprlock = { };
+    };
+  }
+#+end_src
+
+**** ZSH
+
+#+begin_src nix :tangle hosts/common/programs/zsh.nix
+  { ... }:
+
+  {
+    programs.zsh = {
+      enable = true;
+      enableCompletion = true;
+      autosuggestions.enable = true;
+      syntaxHighlighting.enable = true;
+      ohMyZsh = {
+        enable = true;
+        theme = "candy";
+        plugins = [
+          "sudo"
+          "git"
+          "z"
+        ];
+      };
+    };
+  }
+#+end_src
+
+**** gpg-agent
+
+#+begin_src nix :tangle hosts/common/programs/gpg-agent.nix
   { pkgs, ... }:
 
   {
-    programs.hyprland.enable = true;
-    programs.hyprlock.enable = true;
+    programs.gnupg.agent = {
+      enable = true;
+      enableSSHSupport = true;
+      enableBrowserSocket = true;
+    };
+  }
+#+end_src
 
-    services.gvfs.enable = true;
-    services.udisks2.enable = true;
+*** Services
+
+#+begin_src nix :tangle hosts/common/services/default.nix
+  { pkgs, lib, ... }:
+
+  {
+    imports = [ ./greetd.nix ];
+
+    services = lib.enableAll {
+      gvfs = { };
+      udisks2 = { };
+      flatpak = { };
+      printing.drivers = with pkgs; [ postscript-lexmark ]; # Install lexmark drivers for cups
+    };
+  }
+#+end_src
+
+**** Greetd
+
+#+begin_src nix :tangle hosts/common/services/greetd.nix
+  { pkgs, ... }:
+  {
     services.greetd = {
       enable = true;
       settings = {
@@ -378,6 +425,14 @@ This configures virtualisation options like Docker and libvirtd.
         };
       };
     };
+  }
+#+end_src
+
+**** Pipewire
+#+begin_src nix :tangle hosts/common/services/pipewire.nix
+  { ... }:
+
+  {
     services.pipewire = {
       enable = true;
       alsa.enable = true;
@@ -400,34 +455,6 @@ This configures virtualisation options like Docker and libvirtd.
   }
 #+end_src
 
-*** Printing
-
-#+begin_src nix :tangle hosts/common/printing.nix
-  { pkgs, ... }:
-
-  {
-    # Cupsd configuration for printing
-    services.printing = {
-      enable = true;
-      drivers = with pkgs; [ postscript-lexmark ];
-    };
-  }
-#+end_src
-
-*** GPG
-
-#+begin_src nix :tangle hosts/common/gpg.nix
-  { pkgs, ... }:
-
-  {
-    programs.gnupg.agent = {
-      enable = true;
-      enableSSHSupport = true;
-      enableBrowserSocket = true;
-    };
-  }
-#+end_src
-
 ** Laptop
 
 This is my laptop specific configuration.
@@ -440,15 +467,13 @@ This is my laptop specific configuration.
       ../common/generic.nix
       ../common/boot.nix
       ../common/users.nix
-      ../common/shell.nix
       ../common/amdgpu.nix
       ../common/networking.nix
       ../common/bluetooth.nix
       ../common/virtualisation.nix
       ../common/controllers.nix
-      ../common/hyprland.nix
-      ../common/printing.nix
-      ../common/gpg.nix
+      ../common/programs
+      ../common/services
 
       ./kernelModules.nix
       ./filesystem.nix
@@ -529,14 +554,12 @@ This is my desktop specific configuration.
       ../common/generic.nix
       ../common/boot.nix
       ../common/users.nix
-      ../common/shell.nix
       ../common/amdgpu.nix
       ../common/networking.nix
       ../common/virtualisation.nix
       ../common/controllers.nix
-      ../common/hyprland.nix
-      ../common/printing.nix
-      ../common/gpg.nix
+      ../common/programs
+      ../common/services
 
       ./filesystem.nix
     ];
