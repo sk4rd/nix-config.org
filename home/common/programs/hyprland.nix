@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 
 {
   wayland.windowManager.hyprland = {
@@ -24,6 +24,7 @@
         "$mod, R, exec, ${pkgs.tofi}/bin/tofi-run | bash"
         "$mod, W, exec, ${pkgs.brave}/bin/brave"
         "$mod, F, exec, ${pkgs.nautilus}/bin/nautilus"
+        "$mod, E, exec, ${config.programs.emacs.package}/bin/emacs"
 
         # Screenshot
         "$mod SHIFT, S, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp -d)\" - | ${pkgs.wl-clipboard}/bin/wl-copy"
@@ -106,6 +107,9 @@
         kb_options = "grp:win_space_toggle"; # Toggle layout with SUPER + Space
         follow_mouse = 1;
         accel_profile = "flat"; # Disable pointer acceleration
+        touchpad = {
+          natural_scroll = true;
+        };
       };
 
       cursor = {
