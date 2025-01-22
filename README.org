@@ -1316,6 +1316,40 @@ Configuration specific to my laptop.
   { ... }:
 
   {
-    imports = [ ../../common ];
+    imports = [
+      ../../common
+      ./hyprpaper.nix
+      ./hyprpanel.nix
+    ];
+  }
+#+end_src
+
+*** Hyprpaper
+
+#+begin_src nix :tangle home/miko/laptop/hyprpaper.nix
+    { wallpapers, ... }:
+
+    let
+      wp1 = "${wallpapers}/pixel-art/dark-wizard.png";
+    in
+    {
+      services.hyprpaper.settings = {
+        preload = [
+          wp1
+        ];
+        wallpaper = [
+          "eDP-1,${wp1}"
+        ];
+      };
+    }
+#+end_src
+
+*** Hyprpanel
+
+#+begin_src nix :tangle home/miko/laptop/hyprpanel.nix
+  { ... }:
+
+  {
+    programs.hyprpanel.settings.theme.bar.scaling = 60;
   }
 #+end_src
