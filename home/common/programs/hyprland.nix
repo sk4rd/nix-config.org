@@ -7,8 +7,8 @@
     settings = {
       # Environment variables
       env = [
-        "XCURSOR_THEME,Bibata-Modern-Classic"
-        "XCURSOR_SIZE,24"
+        "HYPRCURSOR_THEME,Catppuccin Mocha Dark"
+        "HYPRCURSOR_SIZE,24"
       ];
 
       # Autostarted programs

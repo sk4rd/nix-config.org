@@ -10,6 +10,13 @@
   home = {
     username = username;
     homeDirectory = "/home/${username}";
+    pointerCursor = {
+      package = pkgs.catppuccin-cursors.mochaDark;
+      name = "Catppuccin Mocha Dark";
+      size = 24;
+      x11.enable = true;
+      gtk.enable = true;
+    };
     # Do not change this
     stateVersion = "24.11";
   };
