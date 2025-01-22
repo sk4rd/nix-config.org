@@ -8,6 +8,7 @@
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     hyprpanel.url = "github:Jas-SinghFSU/HyprPanel";
     hyprpanel.inputs.nixpkgs.follows = "nixpkgs";
+    catppuccin.url = "github:catppuccin/nix";
     wallpapers.url = "git+https://codeberg.org/sk4rd/wallpapers.git";
     wallpapers.flake = false;
   };
@@ -18,6 +19,7 @@
       home-manager,
       nixos-hardware,
       hyprpanel,
+      catppuccin,
       wallpapers,
       ...
     }:
@@ -39,7 +41,7 @@
           name:
           nixpkgs.lib.nixosSystem {
             inherit pkgs;
-            modules = [ ./hosts/${name} ] ++ systems.${name}.extraModules or [ ];
+            modules = [ ./hosts/${name} catppuccin.nixosModules.catppuccin { catppuccin.enable = true; }] ++ systems.${name}.extraModules or [ ];
             specialArgs = { inherit lib; hostname = name; }; # Pass hostname to modules
           }
         );
@@ -55,7 +57,7 @@
           in
           home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            modules = [ ./home/${username}/${hostname} ] ++ users.${name}.extraModules or [ ];
+            modules = [ ./home/${username}/${hostname} catppuccin.homeManagerModules.catppuccin { catppuccin.enable = true; }] ++ users.${name}.extraModules or [ ];
             extraSpecialArgs = { inherit lib username hostname wallpapers; }; # Pass username and hostname to modules
           }
         );
