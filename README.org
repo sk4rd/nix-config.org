@@ -1362,9 +1362,26 @@ Configuration specific to my laptop.
   {
     imports = [
       ../../common
+      ./hyprland.nix
       ./hyprpaper.nix
       ./hyprpanel.nix
     ];
+  }
+#+end_src
+
+*** Hyprland
+
+#+begin_src nix :tangle home/miko/laptop/hyprland.nix
+  { pkgs, ... }:
+
+  {
+    wayland.windowManager.hyprland.settings = {
+      monitor = [ "eDP-1, 2880x1800@60, 0x0, 2" ];
+      binde = [
+        ",XF86MonBrightnessUp, exec, ${pkgs.brightnessctl}/bin/brightnessctl s +5%"
+        ",XF86MonBrightnessDown, exec, ${pkgs.brightnessctl}/bin/brightnessctl s 5%-"
+      ];
+    };
   }
 #+end_src
 
