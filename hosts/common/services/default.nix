@@ -7,6 +7,7 @@
     gvfs = { };
     udisks2 = { };
     flatpak = { };
+    upower = { };
     printing.drivers = with pkgs; [ postscript-lexmark ]; # Install lexmark drivers for cups
   };
 }

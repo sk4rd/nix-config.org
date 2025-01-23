@@ -427,6 +427,7 @@ This configures virtualisation options like Docker and libvirtd.
       gvfs = { };
       udisks2 = { };
       flatpak = { };
+      upower = { };
       printing.drivers = with pkgs; [ postscript-lexmark ]; # Install lexmark drivers for cups
     };
   }
