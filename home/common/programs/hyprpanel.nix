@@ -20,6 +20,7 @@
         shortcut4.command = "${pkgs.tofi}/bin/tofi-run";
       };
 
+      menus.dashboard.powermenu.avatar.image = "${profile-picture}";
       theme.bar.menus.menu.dashboard.profile.radius = "12px";
     };
   };
