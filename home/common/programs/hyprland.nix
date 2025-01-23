@@ -26,7 +26,7 @@
         "$mod, R, exec, ${pkgs.tofi}/bin/tofi-run | bash"
         "$mod, W, exec, ${pkgs.brave}/bin/brave"
         "$mod, F, exec, ${pkgs.nautilus}/bin/nautilus"
-        "$mod, E, exec, ${config.programs.emacs.package}/bin/emacs"
+        "$mod, E, exec, ${config.programs.emacs.finalPackage}/bin/emacs"
 
         # Screenshot
         "$mod SHIFT, S, exec, ${pkgs.grim}/bin/grim -g \"$(${pkgs.slurp}/bin/slurp -d)\" - | ${pkgs.wl-clipboard}/bin/wl-copy"
