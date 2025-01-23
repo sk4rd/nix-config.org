@@ -605,6 +605,7 @@ This is my desktop specific configuration.
     imports = [
       ./programs
       ./services
+      ./gtk.nix
     ];
 
     # Basic HomeManager config
@@ -1233,6 +1234,22 @@ Here I define the Emacs config for nix which includes packages.
           before_sleep_cmd = "loginctl lock-session";
         };
       };
+    };
+  }
+#+end_src
+
+*** GTK
+
+#+begin_src nix :tangle home/common/gtk.nix
+  { pkgs, ... }:
+
+  {
+    gtk = {
+      enable = true;
+      theme.package = pkgs.magnetic-catppuccin-gtk;
+      theme.name = "Catppuccin-GTK-Dark";
+      iconTheme.package = pkgs.catppuccin-papirus-folders;
+      iconTheme.name = "Papirus-Dark";
     };
   }
 #+end_src

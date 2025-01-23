@@ -4,6 +4,7 @@
   imports = [
     ./programs
     ./services
+    ./gtk.nix
   ];
 
   # Basic HomeManager config
