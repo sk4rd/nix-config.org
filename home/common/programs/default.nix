@@ -15,6 +15,8 @@
   home.packages = with pkgs; [
     brave
     libreoffice-qt6-fresh
+    spotify
+    vesktop
   ];
 
   # Programs with short or simple configs which are automatically enabled
