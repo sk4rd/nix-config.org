@@ -967,7 +967,7 @@ Here I define the Emacs config for nix which includes packages.
         # Environment variables
         env = [
           "HYPRCURSOR_THEME,Catppuccin Mocha Dark"
-          "HYPRCURSOR_SIZE,24"
+          "HYPRCURSOR_SIZE,32"
         ];
 
         # Autostarted programs
@@ -1403,14 +1403,4 @@ Configuration specific to my laptop.
         ];
       };
     }
-#+end_src
-
-*** Hyprpanel
-
-#+begin_src nix :tangle home/miko/laptop/hyprpanel.nix
-  { ... }:
-
-  {
-    programs.hyprpanel.settings.theme.bar.scaling = 60;
-  }
 #+end_src

@@ -8,7 +8,7 @@
       # Environment variables
       env = [
         "HYPRCURSOR_THEME,Catppuccin Mocha Dark"
-        "HYPRCURSOR_SIZE,24"
+        "HYPRCURSOR_SIZE,32"
       ];
 
       # Autostarted programs
