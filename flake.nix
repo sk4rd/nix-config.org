@@ -28,6 +28,13 @@
       pkgs = import nixpkgs {
         inherit system;
         config.allowUnfree = true;
+        overlays = [
+          (final: prev: {
+            brave = prev.brave.override {
+              commandLineArgs = "--ozone-platform=wayland";
+            };
+          })
+        ];
       };
 
       mkLib = nixpkgs:
