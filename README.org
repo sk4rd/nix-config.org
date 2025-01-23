@@ -355,7 +355,19 @@ This configures virtualisation options like Docker and libvirtd.
     ];
 
     environment.systemPackages = with pkgs; [
+      fd
+      fzf
+      htop
+      lsof
+      ncdu
+      nmap
+      p7zip
+      pulsemixer
+      ripgrep
+      screen
       unzip
+      wget
+      wl-clipboard
     ];
 
     programs = lib.enableAll {
@@ -642,7 +654,7 @@ This is my desktop specific configuration.
 *** Programs
 
 #+begin_src nix :tangle home/common/programs/default.nix
-  { lib, ... }:
+  { pkgs, lib, ... }:
 
   {
     # Imports of programs with larger configs
@@ -654,6 +666,11 @@ This is my desktop specific configuration.
       ./kitty.nix
       ./lf.nix
       ./tofi.nix
+    ];
+
+    home.packages = with pkgs; [
+      brave
+      libreoffice-qt6-fresh
     ];
 
     # Programs with short or simple configs which are automatically enabled
@@ -907,7 +924,6 @@ Here I define the Emacs config for nix which includes packages.
   { pkgs, ... }:
 
   {
-    home.packages = with pkgs; [ nil ];
     programs.emacs = {
       enable = true;
       package = pkgs.emacs30-pgtk;

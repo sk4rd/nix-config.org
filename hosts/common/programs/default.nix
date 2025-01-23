@@ -7,7 +7,19 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    fd
+    fzf
+    htop
+    lsof
+    ncdu
+    nmap
+    p7zip
+    pulsemixer
+    ripgrep
+    screen
     unzip
+    wget
+    wl-clipboard
   ];
 
   programs = lib.enableAll {

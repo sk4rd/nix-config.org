@@ -12,6 +12,11 @@
     ./tofi.nix
   ];
 
+  home.packages = with pkgs; [
+    brave
+    libreoffice-qt6-fresh
+  ];
+
   # Programs with short or simple configs which are automatically enabled
   programs = lib.enableAll {
     home-manager = { }; # Let HomeManager install itself

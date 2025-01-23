@@ -1,7 +1,6 @@
 { pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ nil ];
   programs.emacs = {
     enable = true;
     package = pkgs.emacs30-pgtk;
