@@ -313,6 +313,18 @@
         "type": "github"
       }
     },
+    "profile-picture": {
+      "flake": false,
+      "locked": {
+        "narHash": "sha256-KjPTR7yIYEasFEED1K+hdXJkJhbz1YKYOop+9ylW2cw=",
+        "type": "file",
+        "url": "https://avatars.githubusercontent.com/u/42469640"
+      },
+      "original": {
+        "type": "file",
+        "url": "https://avatars.githubusercontent.com/u/42469640"
+      }
+    },
     "root": {
       "inputs": {
         "catppuccin": "catppuccin",
@@ -320,6 +332,7 @@
         "hyprpanel": "hyprpanel",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
+        "profile-picture": "profile-picture",
         "wallpapers": "wallpapers"
       }
     },

@@ -11,6 +11,8 @@
     catppuccin.url = "github:catppuccin/nix";
     wallpapers.url = "git+https://codeberg.org/sk4rd/wallpapers.git";
     wallpapers.flake = false;
+    profile-picture.url = "https://avatars.githubusercontent.com/u/42469640";
+    profile-picture.flake = false;
   };
 
   outputs =
@@ -21,6 +23,7 @@
       hyprpanel,
       catppuccin,
       wallpapers,
+      profile-picture,
       ...
     }:
     let
@@ -65,7 +68,7 @@
           home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules = [ ./home/${username}/${hostname} catppuccin.homeManagerModules.catppuccin { catppuccin.enable = true; }] ++ users.${name}.extraModules or [ ];
-            extraSpecialArgs = { inherit lib username hostname wallpapers; }; # Pass username and hostname to modules
+            extraSpecialArgs = { inherit lib username hostname wallpapers profile-picture; }; # Pass username and hostname to modules
           }
         );
     in
