@@ -142,11 +142,28 @@ Generates HomeManager configurations for each user.
         username = builtins.elemAt parts 0;
         hostname = builtins.elemAt parts 2;
       in
-      home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [ ./home/${username}/${hostname} catppuccin.homeManagerModules.catppuccin { catppuccin.enable = true; }] ++ users.${name}.extraModules or [ ];
-        extraSpecialArgs = { inherit lib username hostname wallpapers profile-picture; }; # Pass username and hostname to modules
-      }
+        home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            ./home/${username}/${hostname}
+              catppuccin.homeManagerModules.catppuccin
+              {
+                catppuccin.enable = true;
+                catppuccin.cursors.enable = true;
+                catppuccin.cursors.accent = "dark";
+                catppuccin.gtk.gnomeShellTheme = true;
+              }
+          ] ++ users.${name}.extraModules or [ ];
+          extraSpecialArgs = {
+            inherit
+              lib
+              username
+              hostname
+              wallpapers
+              profile-picture
+            ;
+          }; # Pass username and hostname to modules
+        }
     );
 #+end_src
 
@@ -635,13 +652,6 @@ This is my desktop specific configuration.
     home = {
       username = username;
       homeDirectory = "/home/${username}";
-      pointerCursor = {
-        package = pkgs.catppuccin-cursors.mochaDark;
-        name = "Catppuccin Mocha Dark";
-        size = 24;
-        x11.enable = true;
-        gtk.enable = true;
-      };
       # Do not change this
       stateVersion = "24.11";
     };
@@ -969,12 +979,11 @@ Here I define the Emacs config for nix which includes packages.
       enable = true;
 
       settings = {
-        # Environment variables
         env = [
-          "XCURSOR_THEME,Catppuccin Mocha Dark"
-          "XCURSOR_SIZE,32"
           "HYPRCURSOR_THEME,Catppuccin Mocha Dark"
-          "HYPRCURSOR_SIZE,32"
+          "HYPRCURSOR_SIZE,24"
+          "XCURSOR_THEME,Catppuccin Mocha Dark"
+          "XCURSOR_SIZE,24"
         ];
 
         # Autostarted programs
@@ -1294,8 +1303,7 @@ Here I define the Emacs config for nix which includes packages.
   {
     gtk = {
       enable = true;
-      theme.package = pkgs.magnetic-catppuccin-gtk;
-      theme.name = "Catppuccin-GTK-Dark";
+      catppuccin.enable = true;
       iconTheme.package = pkgs.catppuccin-papirus-folders;
       iconTheme.name = "Papirus-Dark";
     };

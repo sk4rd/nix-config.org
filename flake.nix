@@ -65,11 +65,28 @@
             username = builtins.elemAt parts 0;
             hostname = builtins.elemAt parts 2;
           in
-          home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
-            modules = [ ./home/${username}/${hostname} catppuccin.homeManagerModules.catppuccin { catppuccin.enable = true; }] ++ users.${name}.extraModules or [ ];
-            extraSpecialArgs = { inherit lib username hostname wallpapers profile-picture; }; # Pass username and hostname to modules
-          }
+            home-manager.lib.homeManagerConfiguration {
+              inherit pkgs;
+              modules = [
+                ./home/${username}/${hostname}
+                  catppuccin.homeManagerModules.catppuccin
+                  {
+                    catppuccin.enable = true;
+                    catppuccin.cursors.enable = true;
+                    catppuccin.cursors.accent = "dark";
+                    catppuccin.gtk.gnomeShellTheme = true;
+                  }
+              ] ++ users.${name}.extraModules or [ ];
+              extraSpecialArgs = {
+                inherit
+                  lib
+                  username
+                  hostname
+                  wallpapers
+                  profile-picture
+                ;
+              }; # Pass username and hostname to modules
+            }
         );
     in
     {

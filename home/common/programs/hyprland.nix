@@ -5,12 +5,11 @@
     enable = true;
 
     settings = {
-      # Environment variables
       env = [
-        "XCURSOR_THEME,Catppuccin Mocha Dark"
-        "XCURSOR_SIZE,32"
         "HYPRCURSOR_THEME,Catppuccin Mocha Dark"
-        "HYPRCURSOR_SIZE,32"
+        "HYPRCURSOR_SIZE,24"
+        "XCURSOR_THEME,Catppuccin Mocha Dark"
+        "XCURSOR_SIZE,24"
       ];
 
       # Autostarted programs
