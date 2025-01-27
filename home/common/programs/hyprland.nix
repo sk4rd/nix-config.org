@@ -24,7 +24,7 @@
         "$mod, Q, exec, ${pkgs.kitty}/bin/kitty"
         "$mod, R, exec, ${pkgs.tofi}/bin/tofi-run | bash"
         "$mod, W, exec, ${pkgs.brave}/bin/brave"
-        "$mod, F, exec, ${pkgs.nautilus}/bin/nautilus"
+        "$mod, F, exec, ${pkgs.xfce.thunar}/bin/thunar"
         "$mod, E, exec, ${config.programs.emacs.finalPackage}/bin/emacs"
 
         # Screenshot

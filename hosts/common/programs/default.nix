@@ -25,5 +25,10 @@
   programs = lib.enableAll {
     hyprland = { };
     hyprlock = { };
+    xfconf = { };
+    thunar.plugins = with pkgs.xfce; [
+      thunar-archive-plugin
+      thunar-volman
+    ];
   };
 }

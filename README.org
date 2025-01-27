@@ -393,6 +393,11 @@ This configures virtualisation options like Docker and libvirtd.
     programs = lib.enableAll {
       hyprland = { };
       hyprlock = { };
+      xfconf = { };
+      thunar.plugins = with pkgs.xfce; [
+        thunar-archive-plugin
+        thunar-volman
+      ];
     };
   }
 #+end_src
@@ -448,6 +453,7 @@ This configures virtualisation options like Docker and libvirtd.
       udisks2 = { };
       flatpak = { };
       upower = { };
+      tumbler = { };
       printing.drivers = with pkgs; [ postscript-lexmark ]; # Install lexmark drivers for cups
     };
   }
@@ -998,7 +1004,7 @@ Here I define the Emacs config for nix which includes packages.
           "$mod, Q, exec, ${pkgs.kitty}/bin/kitty"
           "$mod, R, exec, ${pkgs.tofi}/bin/tofi-run | bash"
           "$mod, W, exec, ${pkgs.brave}/bin/brave"
-          "$mod, F, exec, ${pkgs.nautilus}/bin/nautilus"
+          "$mod, F, exec, ${pkgs.xfce.thunar}/bin/thunar"
           "$mod, E, exec, ${config.programs.emacs.finalPackage}/bin/emacs"
 
           # Screenshot
