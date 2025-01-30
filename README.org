@@ -622,12 +622,12 @@ This is my desktop specific configuration.
 
   {
     fileSystems."/" = {
-      device = "/dev/disk/by-uuid/776417cb-937b-45bc-b6e0-026615e9da40";
+      device = "/dev/disk/by-uuid/9b6dbfed-23fb-4c32-a1e8-228a6aa469d9";
       fsType = "ext4";
     };
 
     fileSystems."/boot" = {
-      device = "/dev/disk/by-uuid/C4FA-A3EF";
+      device = "/dev/disk/by-uuid/FDBB-D189";
       fsType = "vfat";
     };
 
