@@ -13,8 +13,11 @@
   ];
 
   home.packages = with pkgs; [
+    bottles
     brave
+    file
     libreoffice-qt6-fresh
+    orca-slicer
     spotify
     vesktop
   ];
