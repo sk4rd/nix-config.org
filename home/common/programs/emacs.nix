@@ -61,7 +61,8 @@
       ;; Set up eglot lsp
       (with-eval-after-load 'eglot
         (add-to-list 'eglot-server-programs '(nix-mode . ("${pkgs.nil}/bin/nil")))
-        (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("${pkgs.llvmPackages.clang-tools}/bin/clangd"))))
+        (add-to-list 'eglot-server-programs '((c-mode c++-mode) . ("${pkgs.llvmPackages.clang-tools}/bin/clangd")))
+        (add-to-list 'eglot-server-programs '(java-mode . ("${pkgs.jdt-language-server}/bin/jdtls"))))
       
       ;; Set up nix mode
       (add-hook 'nix-mode-hook
@@ -75,6 +76,9 @@
       
       ;; Set up c++ mode
       (add-hook 'c++-mode-hook 'eglot-ensure)
+      
+      ;; Set up java mode
+      (add-hook 'java-mode-hook 'eglot-ensure)
       
       ;; Line numbers
       (autoload 'display-line-numbers-mode "display-line-numbers" "View line numbers." t)
