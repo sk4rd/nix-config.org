@@ -26,6 +26,9 @@
   # Enable firmware
   hardware.enableAllFirmware = true;
 
+  # Use wayland in chromium or electron
+  environment.sessionVariables.NIXOS_OZONE_WL = "1";
+
   # Do not change this after building your system
   system.stateVersion = "24.11";
 }
