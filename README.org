@@ -161,11 +161,13 @@ Example:
 
 *** Helper Functions
 
-Helper functions simplify creating configurations for hosts and users.
+Provides reusable functions for generating host and user
+configurations dynamically.
 
 **** Host Helper Function
 
-Generates NixOS configurations for each host.
+Generates system configurations for each host, passing necessary
+arguments for customization.
 
 #+name: host-helper-function
 #+begin_src nix
@@ -183,7 +185,8 @@ Generates NixOS configurations for each host.
 
 **** Home Helper Function
 
-Generates HomeManager configurations for each user.
+Generates HomeManager configurations for users, including desktop
+environment themes and user-specific settings.
 
 #+name: home-helper-function
 #+begin_src nix
@@ -223,6 +226,9 @@ Generates HomeManager configurations for each user.
 
 *** Extending the Library
 
+Defines custom functions to extend the Nix library with additional
+utilities.
+
 #+name: extend-lib
 #+begin_src nix
   mkLib = nixpkgs:
@@ -232,6 +238,9 @@ Generates HomeManager configurations for each user.
 #+end_src
 
 * Nix Lib
+
+Defines helper functions used throughout the configuration to
+streamline management.
 
 #+begin_src nix :tangle lib/default.nix
   lib: {
@@ -243,10 +252,12 @@ Generates HomeManager configurations for each user.
 
 ** Common Host Configuration
 
+Contains shared settings applicable to multiple machines.
+
 *** Generic
 
-This contains the generic system configuration, such as time zone and
-fonts.
+Includes general system settings such as time zone, fonts, and
+experimental features.
 
 #+begin_src nix :tangle hosts/common/generic.nix
   { pkgs, ... }:
@@ -284,7 +295,8 @@ fonts.
 
 *** Bootloader
 
-This enables and configures the systemd-boot loader.
+Configures the system bootloader, enabling systemd-boot for EFI-based
+systems.
 
 #+begin_src nix :tangle hosts/common/boot.nix
   { ... }:
@@ -303,8 +315,8 @@ This enables and configures the systemd-boot loader.
 
 *** Users
 
-This defines the user configuration, including user groups and default
-shell.
+Manages user accounts, including default shell settings and group
+memberships.
 
 #+begin_src nix :tangle hosts/common/users.nix
   { config, pkgs, ... }:
@@ -336,7 +348,8 @@ shell.
 
 *** AMDGPU
 
-This section enables opencl and vulkan on amd gpus.
+Enables OpenCL and Vulkan support for AMD GPUs to optimize
+performance.
 
 #+begin_src nix :tangle hosts/common/amdgpu.nix
   { ... }:
@@ -352,7 +365,8 @@ This section enables opencl and vulkan on amd gpus.
 
 *** Networking
 
-This is the networking setup.
+Configures network settings, including enabling NetworkManager,
+WireGuard, and firewall settings.
 
 #+begin_src nix :tangle hosts/common/networking.nix
   { ... }:
@@ -365,6 +379,9 @@ This is the networking setup.
 #+end_src
 
 *** Bluetooth
+
+Enables and configures Bluetooth support, allowing dual-mode
+operation.
 
 #+begin_src nix :tangle hosts/common/bluetooth.nix
   { ... }:
@@ -384,7 +401,8 @@ This is the networking setup.
 
 *** Virtualisation
 
-This configures virtualisation options like Docker and libvirtd.
+Configures virtualization options like Docker and libvirtd for
+managing VMs.
 
 #+begin_src nix :tangle hosts/common/virtualisation.nix
   { pkgs, ... }:
@@ -406,6 +424,9 @@ This configures virtualisation options like Docker and libvirtd.
 #+end_src
 *** Controllers
 
+Enables support for gaming controllers such as Xbox and Steam
+controllers.
+
 #+begin_src nix :tangle hosts/common/controllers.nix
   { ... }:
 
@@ -418,6 +439,9 @@ This configures virtualisation options like Docker and libvirtd.
 #+end_src
 
 *** Programs
+
+Defines system-wide installed programs, including CLI utilities and
+essential applications.
 
 #+begin_src nix :tangle hosts/common/programs/default.nix
   { pkgs, lib, ... }:
@@ -458,6 +482,8 @@ This configures virtualisation options like Docker and libvirtd.
 
 **** ZSH
 
+Configures ZSH as the default shell, enabling plugins and Oh My Zsh.
+
 #+begin_src nix :tangle hosts/common/programs/zsh.nix
   { ... }:
 
@@ -482,6 +508,9 @@ This configures virtualisation options like Docker and libvirtd.
 
 **** gpg-agent
 
+Enables GPG agent support with SSH authentication and browser socket
+functionality.
+
 #+begin_src nix :tangle hosts/common/programs/gpg-agent.nix
   { pkgs, ... }:
 
@@ -495,6 +524,8 @@ This configures virtualisation options like Docker and libvirtd.
 #+end_src
 
 *** Services
+
+Manages system services and background daemons.
 
 #+begin_src nix :tangle hosts/common/services/default.nix
   { pkgs, lib, ... }:
@@ -515,6 +546,8 @@ This configures virtualisation options like Docker and libvirtd.
 
 **** Greetd
 
+Configures the greetd display manager for login screen customization.
+
 #+begin_src nix :tangle hosts/common/services/greetd.nix
   { pkgs, ... }:
   {
@@ -531,6 +564,10 @@ This configures virtualisation options like Docker and libvirtd.
 #+end_src
 
 **** Pipewire
+
+Sets up Pipewire as the audio server, configuring sample rates and
+compatibility settings.
+
 #+begin_src nix :tangle hosts/common/services/pipewire.nix
   { ... }:
 
@@ -560,7 +597,7 @@ This configures virtualisation options like Docker and libvirtd.
 
 ** Laptop
 
-This is my laptop specific configuration.
+Defines settings specific to the laptop configuration.
 
 #+begin_src nix :tangle hosts/laptop/default.nix
   { ... }:
@@ -587,8 +624,7 @@ This is my laptop specific configuration.
 
 *** Filesystem
 
-This configures the file systems for the laptop, including boot and
-root.
+Specifies filesystem mount points and disk settings for the laptop.
 
 #+begin_src nix :tangle hosts/laptop/filesystem.nix
   { ... }:
@@ -615,7 +651,7 @@ root.
 
 *** Kernel Modules
 
-This includes kernel modules needed for specific hardware support.
+Configures required kernel modules for hardware compatibility.
 
 #+begin_src nix :tangle hosts/laptop/kernelModules.nix
 
@@ -635,6 +671,8 @@ This includes kernel modules needed for specific hardware support.
 
 *** Services
 
+Enables power-profiles-daemon for optimized power management.
+
 #+begin_src nix :tangle hosts/laptop/services/default.nix
   { lib, ... }:
 
@@ -647,7 +685,7 @@ This includes kernel modules needed for specific hardware support.
 
 ** Desktop
 
-This is my desktop specific configuration.
+Defines settings specific to the desktop configuration.
 
 #+begin_src nix :tangle hosts/desktop/default.nix
   { ... }:
@@ -670,6 +708,8 @@ This is my desktop specific configuration.
 #+end_src
 
 *** Filesystem
+
+Defines mount points and swap settings for the desktop system.
 
 #+begin_src nix :tangle hosts/desktop/filesystem.nix
   { ... }:
@@ -697,6 +737,8 @@ This is my desktop specific configuration.
 * HomeManager
 
 ** Common Home Configuration
+
+Defines user-specific configurations for HomeManager.
 
 #+begin_src nix :tangle home/common/default.nix
   { username, pkgs, ... }:
@@ -726,6 +768,9 @@ This is my desktop specific configuration.
 #+end_src
 
 *** Programs
+
+Installs user-space applications and enables additional software
+support.
 
 #+begin_src nix :tangle home/common/programs/default.nix
   { pkgs, lib, ... }:
@@ -769,6 +814,8 @@ This is my desktop specific configuration.
 
 **** Git
 
+Configures Git with user details and GPG signing options.
+
 #+begin_src nix :tangle home/common/programs/git.nix
   { pkgs, ... }:
 
@@ -795,6 +842,9 @@ This is my desktop specific configuration.
 #+end_src
 
 **** Kitty
+
+Defines settings for the Kitty terminal emulator, including fonts and
+appearance.
 
 #+begin_src nix :tangle home/common/programs/kitty.nix
   { pkgs, ... }:
@@ -823,6 +873,9 @@ This is my desktop specific configuration.
 #+end_src
 
 **** LF
+
+Configures the LF terminal file manager with keybindings and preview
+settings.
 
 #+begin_src nix :tangle home/common/programs/lf.nix
   { config, pkgs, ... }:
@@ -860,13 +913,12 @@ This is my desktop specific configuration.
 
 **** Emacs
 
-This is my init.el, which gets tangled directly into the =extraConfig=
-option of my nix config.
+Configures Emacs settings, including IDE-like features and extensions.
 
 ***** Backup & Autosave Behavior
 
-This changes the backup and autosave directories, so no annoying files
-pop up in my projects.
+Configures Emacs to store backups and autosaves in dedicated
+directories.
 
 #+name: backup-and-autosave
 #+begin_src elisp
@@ -886,8 +938,7 @@ pop up in my projects.
 
 ***** Look & Feel
 
-This sets the catpuccin theme, sets a font and then disables all gui
-elements.
+Sets up themes, fonts, and UI tweaks for Emacs.
 
 #+name: look-and-feel
 #+begin_src elisp
@@ -909,8 +960,7 @@ elements.
 
 ***** Tab Behavior
 
-This sets the indenting mode to spaces instead of tabs and gives the
-tabs a width of 4.
+Enforces space-based indentation with a tab width of 4 spaces.
 
 #+name: tab-behavior
 #+begin_src elisp
@@ -923,7 +973,8 @@ tabs a width of 4.
 
 ***** Code Editing
 
-This section sets up emacs as a lightweight IDE with autocompletion.
+Configures Emacs for programming with LSP support, autocompletion, and
+syntax highlighting.
 
 #+name: code-editing
 #+begin_src elisp
@@ -974,6 +1025,8 @@ This section sets up emacs as a lightweight IDE with autocompletion.
 
 ***** Org Roam
 
+Sets up Org Roam for note-taking and knowledge management.
+
 #+name: org-roam
 #+begin_src elisp
   (require 'org)
@@ -984,6 +1037,9 @@ This section sets up emacs as a lightweight IDE with autocompletion.
 #+end_src
 
 ***** Keybindings
+
+Defines custom keybindings for window navigation and Org Roam
+shortcuts.
 
 #+name: keybindings
 #+begin_src elisp
@@ -1004,7 +1060,7 @@ This section sets up emacs as a lightweight IDE with autocompletion.
 
 ***** Nix Config
 
-Here I define the Emacs config for nix which includes packages.
+Integrates the Emacs configuration into the Nix-managed setup.
 
 #+begin_src nix :tangle home/common/programs/emacs.nix :noweb yes
   { pkgs, ... }:
@@ -1041,6 +1097,9 @@ Here I define the Emacs config for nix which includes packages.
 #+end_src
 
 **** Hyprland
+
+Configures Hyprland window manager settings, including keybindings and
+appearance settings.
 
 #+begin_src nix :tangle home/common/programs/hyprland.nix
   { config, pkgs, ... }:
@@ -1231,6 +1290,8 @@ Here I define the Emacs config for nix which includes packages.
 
 **** Hyprpanel
 
+Configures Hyprpanel settings for panel layouts and themes.
+
 #+begin_src nix :tangle home/common/programs/hyprpanel.nix
   { profile-picture, pkgs, ... }:
 
@@ -1263,6 +1324,8 @@ Here I define the Emacs config for nix which includes packages.
 
 **** Tofi
 
+Defines settings for Tofi, a lightweight application launcher.
+
 #+begin_src nix :tangle home/common/programs/tofi.nix
   { ... }:
 
@@ -1291,6 +1354,8 @@ Here I define the Emacs config for nix which includes packages.
 
 *** Services
 
+Configures user-space services managed by HomeManager.
+
 #+begin_src nix :tangle home/common/services/default.nix
   { lib, ... }:
 
@@ -1309,6 +1374,9 @@ Here I define the Emacs config for nix which includes packages.
 #+end_src
 
 **** gpg-agent
+
+Sets up the GPG agent for SSH authentication and encrypted
+communications.
 
 #+begin_src nix :tangle home/common/services/gpg-agent.nix
   { pkgs, ... }:
@@ -1332,6 +1400,9 @@ Here I define the Emacs config for nix which includes packages.
 #+end_src
 
 **** Hypridle
+
+Configures Hypridle for automatic screen locking and system
+suspension.
 
 #+begin_src nix :tangle home/common/services/hypridle.nix
   { pkgs, ... }:
@@ -1368,6 +1439,8 @@ Here I define the Emacs config for nix which includes packages.
 
 *** GTK
 
+Sets up GTK themes and icons for a consistent desktop appearance.
+
 #+begin_src nix :tangle home/common/gtk.nix
   { pkgs, ... }:
 
@@ -1383,7 +1456,7 @@ Here I define the Emacs config for nix which includes packages.
 
 ** miko@desktop
 
-Configuration specific to my desktop.
+Defines user-specific settings for the desktop.
 
 #+begin_src nix :tangle home/miko/desktop/default.nix
   { ... }:
@@ -1399,6 +1472,9 @@ Configuration specific to my desktop.
 #+end_src
 
 *** Hyprland
+
+Configures monitor layout and workspace assignments for Hyprland on
+the desktop.
 
 #+begin_src nix :tangle home/miko/desktop/hyprland.nix
   { ... }:
@@ -1433,7 +1509,7 @@ Configuration specific to my desktop.
 
 *** Hyprpaper
 
-Set a wallpaper for hyprpaper.
+Sets the wallpaper for the Hyprland desktop environment.
 
 #+begin_src nix :tangle home/miko/desktop/hyprpaper.nix
   { wallpapers, ... }:
@@ -1457,6 +1533,8 @@ Set a wallpaper for hyprpaper.
 #+end_src
 
 *** Hyprpanel
+
+Configures Hyprpanel layout and scaling settings.
 
 #+begin_src nix :tangle home/miko/desktop/hyprpanel.nix
   { ... }:
@@ -1510,7 +1588,7 @@ Set a wallpaper for hyprpaper.
 
 ** miko@laptop
 
-Configuration specific to my laptop.
+Defines user-specific settings for the laptop.
 
 #+begin_src nix :tangle home/miko/laptop/default.nix
   { ... }:
@@ -1527,6 +1605,8 @@ Configuration specific to my laptop.
 
 *** Hyprland
 
+Configures Hyprland monitor and brightness settings for the laptop.
+
 #+begin_src nix :tangle home/miko/laptop/hyprland.nix
   { pkgs, ... }:
 
@@ -1542,6 +1622,8 @@ Configuration specific to my laptop.
 #+end_src
 
 *** Hyprpaper
+
+Sets the wallpaper for the Hyprland laptop environment.
 
 #+begin_src nix :tangle home/miko/laptop/hyprpaper.nix
     { wallpapers, ... }:
@@ -1562,6 +1644,8 @@ Configuration specific to my laptop.
 #+end_src
 
 *** Hyprpanel
+
+Configures Hyprpanel scaling and menu layouts for the laptop.
 
 #+begin_src nix :tanlge home/miko/laptop/hyprpanel.nix
   { ... }:
