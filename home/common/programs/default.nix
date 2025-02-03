@@ -16,6 +16,7 @@
     bottles
     brave
     file
+    jetbrains.idea-community
     libreoffice-qt6-fresh
     orca-slicer
     spotify

@@ -10,6 +10,7 @@
     fd
     fzf
     htop
+    killall
     lsof
     ncdu
     nmap

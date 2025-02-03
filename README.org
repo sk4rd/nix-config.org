@@ -459,6 +459,7 @@ essential applications.
       fd
       fzf
       htop
+      killall
       lsof
       ncdu
       nmap
@@ -596,7 +597,6 @@ compatibility settings.
     };
   }
 #+end_src
-
 
 ** Laptop
 
@@ -794,6 +794,7 @@ support.
       bottles
       brave
       file
+      jetbrains.idea-community
       libreoffice-qt6-fresh
       orca-slicer
       spotify
