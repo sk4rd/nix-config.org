@@ -848,6 +848,9 @@ elements.
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
   (tool-bar-mode -1)
+
+  ;; Enable doom-modeline
+  (add-hook 'after-init-hook #'doom-modeline-mode)
 #+end_src
 
 ***** Tab Behavior
@@ -957,11 +960,12 @@ Here I define the Emacs config for nix which includes packages.
       enable = true;
       package = pkgs.emacs30-pgtk;
       extraPackages = epkgs: with epkgs; [
-        markdown-mode
-        company
         catppuccin-theme
-        nix-mode
+        company
+        doom-modeline
         magit
+        markdown-mode
+        nix-mode
         org-roam
         org-roam-ui
       ];

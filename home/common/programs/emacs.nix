@@ -5,11 +5,12 @@
     enable = true;
     package = pkgs.emacs30-pgtk;
     extraPackages = epkgs: with epkgs; [
-      markdown-mode
-      company
       catppuccin-theme
-      nix-mode
+      company
+      doom-modeline
       magit
+      markdown-mode
+      nix-mode
       org-roam
       org-roam-ui
     ];
@@ -38,6 +39,9 @@
       (menu-bar-mode -1)
       (scroll-bar-mode -1)
       (tool-bar-mode -1)
+      
+      ;; Enable doom-modeline
+      (add-hook 'after-init-hook #'doom-modeline-mode)
 
       ;; Use spaces instead of tabs globally
       (setq-default indent-tabs-mode nil)
