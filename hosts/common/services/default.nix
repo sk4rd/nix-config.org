@@ -1,7 +1,9 @@
 { pkgs, lib, ... }:
 
 {
-  imports = [ ./greetd.nix ];
+  imports = [
+    ./plasma.nix
+  ];
 
   services = lib.enableAll {
     gvfs = { };

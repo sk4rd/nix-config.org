@@ -535,7 +535,9 @@ Manages system services and background daemons.
   { pkgs, lib, ... }:
 
   {
-    imports = [ ./greetd.nix ];
+    imports = [
+      ./plasma.nix
+    ];
 
     services = lib.enableAll {
       gvfs = { };
@@ -554,6 +556,7 @@ Configures the greetd display manager for login screen customization.
 
 #+begin_src nix :tangle hosts/common/services/greetd.nix
   { pkgs, ... }:
+
   {
     services.greetd = {
       enable = true;
@@ -563,6 +566,23 @@ Configures the greetd display manager for login screen customization.
           user = "greeter";
         };
       };
+    };
+  }
+#+end_src
+
+**** Plasma6
+
+#+begin_src nix :tangle hosts/common/services/plasma.nix
+  { pkgs, ... }:
+
+  {
+    services.desktopManager.plasma6 = {
+      enable = true;
+    };
+
+    services.displayManager.sddm = {
+      enable = true;
+      wayland.enable = true;
     };
   }
 #+end_src
