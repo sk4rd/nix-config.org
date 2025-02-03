@@ -3,16 +3,20 @@
 
 [[./colors.png]]
 
-This file contains my NixOS and HomeManager configuration using
-flakes, written in org-mode. The goal is to manage system and program
-settings declaratively and keep everything well-structured.
+* Introduction
 
-* Flake
+This file contains my NixOS and HomeManager configuration, written in Org-mode and managed via Nix flakes.
+The goal of this setup is to:
+- Manage system and user configurations declaratively.
+- Keep settings modular and reusable.
+- Automate system setup across multiple devices.
+
+* Nix Flake
 
 This flake manages dependencies (inputs) and defines configurations
 (outputs) for NixOS and HomeManager.
 
-** Inputs
+** Inputs (Dependencies)
 
 Dependencies for the configuration, including:
 - =nixpkgs=: The main Nix package source.
@@ -36,7 +40,7 @@ Dependencies for the configuration, including:
   };
 #+end_src
 
-** Outputs
+** Outputs (Configurations)
 
 Defines system (NixOS) and user (HomeManager) configurations as flake
 outputs.
@@ -68,26 +72,76 @@ outputs.
         <<home-helper-function>>
       in
       {
-        nixosConfigurations = mkHosts {
-          "laptop".extraModules = [ nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1 ];
-          "desktop".extraModules = [
-            nixos-hardware.nixosModules.common-cpu-amd
-            nixos-hardware.nixosModules.common-gpu-amd
-            nixos-hardware.nixosModules.common-pc-ssd
-          ];
-        };
+        <<system-configurations>>
 
-        homeConfigurations = mkHomes {
-          "miko@laptop".extraModules = [ hyprpanel.homeManagerModules.hyprpanel ];
-          "miko@desktop".extraModules = [ hyprpanel.homeManagerModules.hyprpanel ];
-        };
+        <<user-configurations>>
       };
   }
 #+end_src
 
+*** System Configurations (=nixosConfigurations=)
+
+This section defines the NixOS system configurations for different
+machines.
+
+Each host is created using the mkHosts function, which simplifies
+configuration reuse.
+
+Additional modules specific to each system are passed in the
+extraModules field.
+
+Example:
+
+- =laptop= includes Lenovo ThinkPad-specific hardware modules.
+
+- =desktop= includes AMD CPU/GPU and SSD optimizations.
+
+#+name: system-configurations
+#+begin_src nix
+  nixosConfigurations = mkHosts {
+    "laptop".extraModules = [ nixos-hardware.nixosModules.lenovo-thinkpad-z13-gen1 ];
+    "desktop".extraModules = [
+      nixos-hardware.nixosModules.common-cpu-amd
+      nixos-hardware.nixosModules.common-gpu-amd
+      nixos-hardware.nixosModules.common-pc-ssd
+    ];
+  };
+#+end_src
+
+*** User Configurations (=homeConfigurations=)
+
+This section defines HomeManager configurations for individual users.
+
+Similar to nixosConfigurations, mkHomes is used to generate
+configurations dynamically.
+
+Additional HomeManager modules (e.g., hyprpanel) can be applied per
+user.
+
+#+name: user-configurations
+#+begin_src nix
+  homeConfigurations = mkHomes {
+    "miko@laptop".extraModules = [ hyprpanel.homeManagerModules.hyprpanel ];
+    "miko@desktop".extraModules = [ hyprpanel.homeManagerModules.hyprpanel ];
+  };
+#+end_src
+
 *** System & Packages
 
-Configures the system type and enables unfree software.
+This section defines the system architecture and package management
+settings.
+
+It ensures that the system is correctly identified and that packages
+can be installed with necessary configurations.
+
+Example:
+
+- Defines system as =x86_64-linux=.
+
+- Enables =allowUnfree= to install non-free software.
+
+- Adds overlays to modify specific packages (e.g., setting Brave
+  browser flags).
 
 #+name: system-and-packages
 #+begin_src nix
